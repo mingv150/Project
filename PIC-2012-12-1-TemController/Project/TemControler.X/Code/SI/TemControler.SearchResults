@@ -1,0 +1,9 @@
+---- STATE_ERR Matches (4 in 2 files) ----
+App_fsm.c (j:\temporary\...\app):692
+                StateSys = STATE_ERR;
+App_fsm.c (j:\temporary\...\app):986
+        case STATE_ERR:
+App_fsm.c (j:\temporary\...\app):1102
+    if((StateSys != STATE_ERR) && (StateSys != STATE_POWEOFF) && (StateSys != STATE_SETUPERR))
+App_fsm.h (j:\temporary\...\app):45
+    STATE_ERR,
