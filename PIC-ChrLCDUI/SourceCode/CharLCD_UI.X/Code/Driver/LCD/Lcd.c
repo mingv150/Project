@@ -1,0 +1,331 @@
+/****************************************************************************
+Copyright (C), 2014, Mingv150, All rights reserved
+FileName: /Driver/Lcd/Lcd.c
+Description:  
+Author:  
+Version:  
+Changelog: 
+*****************************************************************************/
+
+#define _Lcd_C_
+/****************************************************************************
+Global header file:
+*****************************************************************************/
+#include <htc.h>
+#include "../../Common.h"
+#include "../../Model.h"
+#include "../../oopc.h"
+
+/****************************************************************************
+Local header file:
+*****************************************************************************/
+#include "../BSP/BspGpio.h"
+#include "Lcd.h"
+
+/****************************************************************************
+Global Data Structure:
+*****************************************************************************/
+static u8 Lcd_Purpose;
+
+
+/****************************************************************************
+Function: Name
+Description:
+Input:
+Output:
+Notes:
+*****************************************************************************/
+static void Lcd_Delay(u16 t)
+{
+	u8 i;
+ 	while(t--)
+ 	{
+  		for(i=0;i<125;i++);
+ 	}  
+}
+
+#if 0
+/****************************************************************************
+Function: FunctionName
+Description: 
+Input: 
+Output:
+Notes: 
+*****************************************************************************/
+static void Lcd_WriteCommand(u8 Command)
+{
+	u8 i;
+	u32 ShiftDat;
+
+	//RS=0; RW=0
+	ShiftDat = (0xF8<<24)|(Command&0xf0)<<16|(Command&0x0f)<<12;
+	for(i=0;i<24;i++)
+	{
+		BspGpio_SCLKC(BspGpio_OUTPUT);
+		BspGpio_SCLKOUT(BspGpio_LOW);
+		Lcd_Delay(1);
+		BspGpio_SDATC(BspGpio_OUTPUT);
+		BspGpio_SDATOUT(((ShiftDat&0x80000000) ? 1 : 0));
+		BspGpio_SCLKOUT(BspGpio_HIGH);
+		Lcd_Delay(1);
+		ShiftDat<<1;	
+	}
+	Lcd_Delay(10);
+}
+
+
+/****************************************************************************
+Function: Name
+Description:
+Input:
+Output:
+Notes:
+*****************************************************************************/
+static u8 Lcd_ReadStatus(void)
+{
+	
+}
+
+
+/****************************************************************************
+Function: Name
+Description:
+Input:
+Output:
+Notes:
+*****************************************************************************/
+static void Lcd_WriteData(u8 Data)
+{
+	u8 i;
+	u32 ShiftDat;
+
+	//RS=0; RW=0
+	ShiftDat = (0xFA<<24)|(Data&0xf0)<<16|(Data&0x0f)<<12;
+	for(i=0;i<24;i++)
+	{
+		BspGpio_SCLKC(BspGpio_OUTPUT);
+		BspGpio_SCLKOUT(BspGpio_LOW);
+		Lcd_Delay(1);
+		BspGpio_SDATC(BspGpio_OUTPUT);
+		BspGpio_SDATOUT(((ShiftDat&0x80000000) ? 1 : 0));
+		BspGpio_SCLKOUT(BspGpio_HIGH);
+		Lcd_Delay(1);
+		ShiftDat<<1;
+	}
+	Lcd_Delay(10);	
+}
+
+
+/****************************************************************************
+Function: Name
+Description:
+Input:
+Output:
+Notes:
+*****************************************************************************/
+static u8 Lcd_ReadData(void)
+{
+	
+}
+
+
+/****************************************************************************
+Function: Name
+Description:
+Input:
+Output:
+Notes:
+*****************************************************************************/
+void Lcd_Init(void)
+{
+#define CLEAR_SCREEN 0x01   //????Â¡???????Â¡Ã¨???????Â¡?????AC??????00H
+#define AC_INIT   0x02   //?Â¡Ã£?ACÂ¨Â¨????????00H?????????????Â¡Ã¬???Â¡Ã£????????????
+#define CURSE_ADD  0x06   //Â¨Â¨????????????Â¡Ã¬???Â¡Ã£??????????????????????Â¡Ã¬???Â¡Â§?????????Â¨Â¦??Â¨Â¨?Â¡Ã¨??????????Â¡Ã¬?????????????????????Â¡Â§???
+#define FUN_MODE  0x30   //???????Â¡Â§???????8??????????????Â¡Ã¨Â¨Â¦??
+#define DISPLAY_ON  0x0c   //????Â¡Ã¨????,????Â¡Ã¨???????????????????????????????
+#define DISPLAY_OFF  0x08   //????Â¡Ã¨????
+#define CURSE_DIR  0x14   //?????????????Â¡Ã¬???Â¡Â§:AC=AC+1
+#define SET_CG_AC  0x40   //Â¨Â¨?????AC???Â¨Â¨???????????00H~3FH
+#define SET_DD_AC  0x80
+
+	Lcd_WriteCommand(0x30);
+	Lcd_WriteCommand(0x30);
+	Lcd_WriteCommand(0x0C);
+	Lcd_WriteCommand(0x01);
+}
+
+
+
+#endif
+
+
+
+
+
+
+#define CLEAR_SCREEN 0x01   //????Â¡???????Â¡Ã¨???????Â¡?????AC??????00H
+#define AC_INIT   0x02   //?Â¡Ã£?ACÂ¨Â¨????????00H?????????????Â¡Ã¬???Â¡Ã£????????????
+#define CURSE_ADD  0x06   //Â¨Â¨????????????Â¡Ã¬???Â¡Ã£??????????????????????Â¡Ã¬???Â¡Â§?????????Â¨Â¦??Â¨Â¨?Â¡Ã¨??????????Â¡Ã¬?????????????????????Â¡Â§???
+#define FUN_MODE  0x30   //???????Â¡Â§???????8??????????????Â¡Ã¨Â¨Â¦??
+#define DISPLAY_ON  0x0c   //????Â¡Ã¨????,????Â¡Ã¨???????????????????????????????
+#define DISPLAY_OFF  0x08   //????Â¡Ã¨????
+#define CURSE_DIR  0x14   //?????????????Â¡Ã¬???Â¡Â§:AC=AC+1
+#define SET_CG_AC  0x40   //Â¨Â¨?????AC???Â¨Â¨???????????00H~3FH
+#define SET_DD_AC  0x80
+
+const u8 addr_tab[]=
+{
+	0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,//??????Â¨Â¨???Â¡???????????
+  0x90,0x91,0x92,0x93,0x94,0x95,0x96,0x97,//??????Â¨Â¨???Â¡???????????
+  0x88,0x89,0x8a,0x8b,0x8c,0x8d,0x8e,0x8f,//??????Â¨Â¨???Â¡???????????
+	0x98,0x99,0x9a,0x9b,0x9c,0x9d,0x9e,0x9f,//??????Â¨Â¨???Â¡???????????
+
+};
+
+
+
+void delayms(u16 t)     //?????????n???ms???
+{
+ u8 i;
+ while(t--)
+ {
+  for(i=0;i<125;i++);
+ }      
+}
+
+
+
+
+void SendByte(u8 Dbyte)
+{
+     u8 i;
+     u8 temp;
+     for(i=0;i<8;i++)
+     {
+     	BspGpio_SCLKC(BspGpio_OUTPUT);
+		BspGpio_SCLKOUT(BspGpio_LOW);
+		//delayms(1);
+        BspGpio_SDATC(BspGpio_OUTPUT);
+        temp = (Dbyte&0x80) ? 1 : 0 ;
+		BspGpio_SDATOUT(temp);
+        BspGpio_SCLKOUT(BspGpio_HIGH);
+        //delayms(1);
+        BspGpio_SCLKOUT(BspGpio_LOW);
+        Dbyte=Dbyte<<1;        //????Â¡Ã¬???????
+     }
+     //delayms(1);
+}
+
+
+
+
+u8 ReceiveByte(void)
+{
+     u8 i,temp1,temp2;
+     temp1 = 0;
+     temp2 = 0;
+     for(i=0;i<8;i++)
+     {
+           temp1=temp1<<1;
+           BspGpio_SCLKC(BspGpio_OUTPUT);
+           BspGpio_SCLKOUT(BspGpio_LOW);
+           //delayms(1);
+           BspGpio_SCLKOUT(BspGpio_HIGH);
+           //delayms(1);
+           BspGpio_SCLKOUT(BspGpio_LOW);
+           BspGpio_SDATC(BspGpio_INPUT);
+           if(BspGpio_SDATIN()) temp1++;
+     }
+     //delayms(1);
+     for(i=0;i<8;i++)
+     {
+           temp2=temp2<<1;
+           BspGpio_SCLKC(BspGpio_OUTPUT);
+           BspGpio_SCLKOUT(BspGpio_LOW);
+           //delayms(1);
+           BspGpio_SCLKOUT(BspGpio_HIGH);
+           //delayms(1);
+           BspGpio_SCLKOUT(BspGpio_LOW);
+           BspGpio_SDATC(BspGpio_INPUT);
+           if(BspGpio_SDATIN()) temp2++;
+     }
+     //delayms(1);
+     return ((0xf0&temp1)+(0x0f&(temp2>>4));
+}
+
+
+
+
+
+void CheckBusy(void)
+{
+     do   SendByte(0xfc);         //11111,RW(1),RS(0),0
+     while(0x80&ReceiveByte());       //BF(.7)=1 Busy
+}
+
+
+u8 Lcd_ReadData(void)
+{
+    u8 dat;
+    SendByte(0xfe);   
+    dat = ReceiveByte();
+
+    return dat;
+
+}
+
+void Lcd_WriteCmd(u8 Cbyte )
+{
+
+     BspGpio_CSC(BspGpio_OUTPUT);
+     BspGpio_CSOUT(BspGpio_HIGH);
+     CheckBusy();
+     SendByte(0xf8);              //11111,RW(0),RS(0),0
+     SendByte(0xf0&Cbyte);        //Â¨Â¦????????
+     SendByte(0xf0&Cbyte<<4);   //?????????(?????Â¡Ã¬Â¨Â¨??<<)
+     BspGpio_CSOUT(BspGpio_LOW);
+}
+
+void Lcd_WriteData(u8 Dbyte )
+{
+     BspGpio_CSC(BspGpio_OUTPUT);
+     BspGpio_CSOUT(BspGpio_HIGH);
+     CheckBusy();
+     SendByte(0xfa);              //11111,RW(0),RS(1),0
+     SendByte(0xf0&Dbyte);        //Â¨Â¦????????
+     SendByte(0xf0&Dbyte<<4);   //?????????(?????Â¡Ã¬Â¨Â¨??<<)
+     BspGpio_CSOUT(BspGpio_LOW);
+}
+
+void Lcd_Init(void)
+{
+//    PSB = 0;
+  ANSEL = 0x00;
+ delayms(10);
+    Lcd_WriteCmd(0x30);        //Â¨Â¦????????????????Â¡Ã¨Â¨Â¦??
+ delayms(1);
+    Lcd_WriteCmd(0x30);          //Â¨Â¦?????8bit??Â¡Ã£??????
+ delayms(1);
+    Lcd_WriteCmd(0x0c);          //???????Â¡Ã¨?(?????????????????????)
+ delayms(1);
+    Lcd_WriteCmd(0x01);          //???Â¨Â¦?Â¡Ã¨????Â¡Ã¨??????????Â¨Â¨???????Â¡Ã£??????Â¨Â¦?????00H
+ delayms(10);
+}
+
+void Lcd_StrDisp(u8 x,u8 y,const u8 *s)
+{
+  Lcd_WriteCmd(addr_tab[8*x+y]);  //?????Â¡Ã£???
+
+ while(*s>0)
+    {
+  Lcd_WriteData(*s);    //?????Â¡Ã£???
+  s++;   
+    }
+}
+
+
+void hanzi_Cur(u8 x,u8 y)
+{
+  Lcd_WriteCmd(addr_tab[8*x+y]);  //?????Â¡Ã£???
+
+}

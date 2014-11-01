@@ -1,0 +1,1200 @@
+
+
+HI-TECH Software PIC PRO Macro Assembler V9.83 build 10920 
+                                                                                               Fri Oct 31 21:23:02 2014
+
+HI-TECH Software Omniscient Code Generator (PRO mode) build 10920
+     1                           	processor	16F914
+     2                           	opt	pw 120
+     3                           	opt	pm
+     4                           	psect	config,global,class=CONFIG,delta=2
+     5                           	psect	strings,global,class=STRING,delta=2
+     6                           	psect	cinit,global,class=CODE,delta=2
+     7                           	psect	cstackCOMMON,global,class=COMMON,space=1,delta=1
+     8                           	psect	maintext,global,class=CODE,delta=2
+     9                           	psect	text89,local,class=CODE,delta=2
+    10                           	psect	text97,local,class=CODE,delta=2
+    11                           	psect	pa_nodes,global,class=CODE,delta=2
+    12                           	dabs	1,0x7E,2
+    13  000A                     	;#
+    14                           
+    15                           	psect	config
+    16  2007  EB92               	dw	60306	;#
+    17                           
+    18                           	psect	strings
+    19  0002                     __pstrings:	
+    20  0002                     stringtab:	
+    21                           ;	global	stringdir,stringtab,__stringbase
+    22                           
+    23  0002                     stringcode:	
+    24                           ;	String table - string pointers are 1 byte each
+    25                           
+    26  0002                     stringdir:	
+    27  0002  3000               	movlw	high stringdir
+    28  0003  008A               	movwf	10
+    29  0004  0804               	movf	4,w
+    30  0005  0A84               	incf	4,f
+    31  0006  0782               	addwf	2,f
+    32  0007                     __stringbase:	
+    33  0007  3400               	retlw	0
+    34  0008                     _addr_tab:	
+    35  0008  3480               	retlw	128
+    36  0009  3481               	retlw	129
+    37  000A  3482               	retlw	130
+    38  000B  3483               	retlw	131
+    39  000C  3484               	retlw	132
+    40  000D  3485               	retlw	133
+    41  000E  3486               	retlw	134
+    42  000F  3487               	retlw	135
+    43  0010  3490               	retlw	144
+    44  0011  3491               	retlw	145
+    45  0012  3492               	retlw	146
+    46  0013  3493               	retlw	147
+    47  0014  3494               	retlw	148
+    48  0015  3495               	retlw	149
+    49  0016  3496               	retlw	150
+    50  0017  3497               	retlw	151
+    51  0018  3488               	retlw	136
+    52  0019  3489               	retlw	137
+    53  001A  348A               	retlw	138
+    54  001B  348B               	retlw	139
+    55  001C  348C               	retlw	140
+    56  001D  348D               	retlw	141
+    57  001E  348E               	retlw	142
+    58  001F  348F               	retlw	143
+    59  0020  3498               	retlw	152
+    60  0021  3499               	retlw	153
+    61  0022  349A               	retlw	154
+    62  0023  349B               	retlw	155
+    63  0024  349C               	retlw	156
+    64  0025  349D               	retlw	157
+    65  0026  349E               	retlw	158
+    66  0027  349F               	retlw	159
+    67  0048                     _RE0	set	72
+    68  0049                     _RE1	set	73
+    69  004A                     _RE2	set	74
+    70  0091                     _ANSEL	set	145
+    71  0448                     _TRISE0	set	1096
+    72  0449                     _TRISE1	set	1097
+    73  044A                     _TRISE2	set	1098
+    74  0028                     STR_1:	
+    75  0028  34E5               	retlw	-27
+    76  0029  348E               	retlw	-114
+    77  002A  34A6               	retlw	-90
+    78  002B  34E9               	retlw	-23
+    79  002C  3497               	retlw	-105
+    80  002D  34A8               	retlw	-88
+    81  002E  34E4               	retlw	-28
+    82  002F  34BA               	retlw	-70
+    83  0030  34BF               	retlw	-65
+    84  0031  34E8               	retlw	-24
+    85  0032  3481               	retlw	-127
+    86  0033  3494               	retlw	-108
+    87  0034  34E7               	retlw	-25
+    88  0035  34BD               	retlw	-67
+    89  0036  3491               	retlw	-111
+    90  0037  34E7               	retlw	-25
+    91  0038  34BB               	retlw	-69
+    92  0039  349C               	retlw	-100
+    93  003A  3400               	retlw	0
+    94  003B                     STR_2:	
+    95  003B  34E7               	retlw	-25
+    96  003C  3494               	retlw	-108
+    97  003D  34B5               	retlw	-75
+    98  003E  34E8               	retlw	-24
+    99  003F  34AF               	retlw	-81
+   100  0040  349D               	retlw	-99
+   101  0041  34E6               	retlw	-26
+   102  0042  3498               	retlw	-104
+   103  0043  34AF               	retlw	-81
+   104  0044  34E5               	retlw	-27
+   105  0045  34A4               	retlw	-92
+   106  0046  349A               	retlw	-102
+   107  0047  34E5               	retlw	-27
+   108  0048  34B0               	retlw	-80
+   109  0049  3491               	retlw	-111
+   110  004A  3400               	retlw	0
+   111  003B                     
+   112                           	psect	cinit
+   113  06D8                     start_initialization:	
+   114  06D8                     end_of_initialization:	
+   115                           ;End of C runtime variable initialization code
+   116                           
+   117  06D8  0183               	clrf	3
+   118  06D9  118A  2EDB         	ljmp	_main	;jump to C main() function
+   119                           
+   120                           	psect	cstackCOMMON
+   121  0070                     __pcstackCOMMON:	
+   122  0070                     ?_delayms:	
+   123  0070                     ?_SendByte:	
+   124                           ; 0 bytes @ 0x0
+   125                           
+   126  0070                     ?_CheckBusy:	
+   127                           ; 0 bytes @ 0x0
+   128                           
+   129  0070                     ?_Lcd_WriteCmd:	
+   130                           ; 0 bytes @ 0x0
+   131                           
+   132  0070                     ?_Lcd_WriteData:	
+   133                           ; 0 bytes @ 0x0
+   134                           
+   135  0070                     ?_Lcd_Init:	
+   136                           ; 0 bytes @ 0x0
+   137                           
+   138  0070                     ?_main:	
+   139                           ; 0 bytes @ 0x0
+   140                           
+   141  0070                     ?_ReceiveByte:	
+   142                           ; 0 bytes @ 0x0
+   143                           
+   144  0070                     delayms@t:	
+   145                           ; 1 bytes @ 0x0
+   146                           
+   147                           
+   148                           ; 2 bytes @ 0x0
+   149  0070                     	ds	2
+   150  0072                     ??_delayms:	
+   151  0072                     delayms@i:	
+   152                           ; 0 bytes @ 0x2
+   153                           
+   154                           
+   155                           ; 1 bytes @ 0x2
+   156  0072                     	ds	1
+   157  0073                     ??_SendByte:	
+   158  0073                     ??_ReceiveByte:	
+   159                           ; 0 bytes @ 0x3
+   160                           
+   161  0073                     SendByte@Dbyte:	
+   162                           ; 0 bytes @ 0x3
+   163                           
+   164                           
+   165                           ; 1 bytes @ 0x3
+   166  0073                     	ds	1
+   167  0074                     SendByte@temp:	
+   168  0074                     ReceiveByte@temp1:	
+   169                           ; 1 bytes @ 0x4
+   170                           
+   171                           
+   172                           ; 1 bytes @ 0x4
+   173  0074                     	ds	1
+   174  0075                     SendByte@i:	
+   175  0075                     ReceiveByte@temp2:	
+   176                           ; 1 bytes @ 0x5
+   177                           
+   178                           
+   179                           ; 1 bytes @ 0x5
+   180  0075                     	ds	1
+   181  0076                     ReceiveByte@i:	
+   182                           
+   183                           ; 1 bytes @ 0x6
+   184  0076                     	ds	1
+   185  0077                     ??_CheckBusy:	
+   186                           
+   187                           ; 0 bytes @ 0x7
+   188  0077                     	ds	1
+   189  0078                     ??_Lcd_WriteCmd:	
+   190  0078                     ??_Lcd_WriteData:	
+   191                           ; 0 bytes @ 0x8
+   192                           
+   193  0078                     Lcd_WriteCmd@Cbyte:	
+   194                           ; 0 bytes @ 0x8
+   195                           
+   196  0078                     Lcd_WriteData@Dbyte:	
+   197                           ; 1 bytes @ 0x8
+   198                           
+   199                           
+   200                           ; 1 bytes @ 0x8
+   201  0078                     	ds	1
+   202  0079                     ??_Lcd_Init:	
+   203  0079                     ?_hanzi_Disp:	
+   204                           ; 0 bytes @ 0x9
+   205                           
+   206  0079                     hanzi_Disp@y:	
+   207                           ; 0 bytes @ 0x9
+   208                           
+   209                           
+   210                           ; 1 bytes @ 0x9
+   211  0079                     	ds	1
+   212  007A                     hanzi_Disp@s:	
+   213                           
+   214                           ; 1 bytes @ 0xA
+   215  007A                     	ds	1
+   216  007B                     ??_hanzi_Disp:	
+   217                           
+   218                           ; 0 bytes @ 0xB
+   219  007B                     	ds	2
+   220  007D                     hanzi_Disp@x:	
+   221                           
+   222                           ; 1 bytes @ 0xD
+   223  007D                     	ds	1
+   224  007E                     ??_main:	
+   225                           
+   226                           	psect	maintext
+   227  06DB                     __pmaintext:	
+   228                           ; 0 bytes @ 0xE
+   229 ;;Data sizes: Strings 35, constant 32, data 0, bss 0, persistent 0 stack 0
+   230 ;;Auto spaces:   Size  Autos    Used
+   231 ;; COMMON          14     14      14
+   232 ;; BANK0           80      0       0
+   233 ;; BANK1           80      0       0
+   234 ;; BANK2           80      0       0
+   235 ;;
+   236 ;; Pointer list with targets:
+   237 ;; hanzi_Disp@s	PTR const unsigned char  size(1) Largest target is 19
+   238 ;;		 -> STR_4(CODE[16]), STR_3(CODE[19]), STR_2(CODE[16]), STR_1(CODE[19]), 
+   239 ;;
+   240 ;;
+   241 ;; Critical Paths under _main in COMMON
+   242 ;;
+   243 ;;   _main->_hanzi_Disp
+   244 ;;   _hanzi_Disp->_Lcd_WriteCmd
+   245 ;;   _hanzi_Disp->_Lcd_WriteData
+   246 ;;   _Lcd_Init->_Lcd_WriteCmd
+   247 ;;   _Lcd_WriteData->_CheckBusy
+   248 ;;   _Lcd_WriteCmd->_CheckBusy
+   249 ;;   _CheckBusy->_ReceiveByte
+   250 ;;   _ReceiveByte->_delayms
+   251 ;;   _SendByte->_delayms
+   252 ;;
+   253 ;; Critical Paths under _main in BANK0
+   254 ;;
+   255 ;;   None.
+   256 ;;
+   257 ;; Critical Paths under _main in BANK1
+   258 ;;
+   259 ;;   None.
+   260 ;;
+   261 ;; Critical Paths under _main in BANK2
+   262 ;;
+   263 ;;   None.
+   264 ;;
+   265 ;;Main: autosize = 0, tempsize = 0, incstack = 0, save=0
+   266 ;;
+   267 ;;
+   268 ;;Call Graph Tables:
+   269 ;;
+   270 ;; ---------------------------------------------------------------------------------
+   271 ;; (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+   272 ;; ---------------------------------------------------------------------------------
+   273 ;; (0) _main                                                 0     0      0    1275
+   274 ;;                           _Lcd_Init
+   275 ;;                         _hanzi_Disp
+   276 ;;                            _delayms
+   277 ;; ---------------------------------------------------------------------------------
+   278 ;; (1) _hanzi_Disp                                           5     3      2     810
+   279 ;;                                              9 COMMON     5     3      2
+   280 ;;                       _Lcd_WriteCmd
+   281 ;;                      _Lcd_WriteData
+   282 ;; ---------------------------------------------------------------------------------
+   283 ;; (1) _Lcd_Init                                             0     0      0     420
+   284 ;;                            _delayms
+   285 ;;                       _Lcd_WriteCmd
+   286 ;; ---------------------------------------------------------------------------------
+   287 ;; (2) _Lcd_WriteData                                        1     1      0     375
+   288 ;;                                              8 COMMON     1     1      0
+   289 ;;                          _CheckBusy
+   290 ;;                           _SendByte
+   291 ;; ---------------------------------------------------------------------------------
+   292 ;; (2) _Lcd_WriteCmd                                         1     1      0     375
+   293 ;;                                              8 COMMON     1     1      0
+   294 ;;                          _CheckBusy
+   295 ;;                           _SendByte
+   296 ;; ---------------------------------------------------------------------------------
+   297 ;; (3) _CheckBusy                                            1     1      0     240
+   298 ;;                                              7 COMMON     1     1      0
+   299 ;;                           _SendByte
+   300 ;;                        _ReceiveByte
+   301 ;; ---------------------------------------------------------------------------------
+   302 ;; (4) _ReceiveByte                                          4     4      0     135
+   303 ;;                                              3 COMMON     4     4      0
+   304 ;;                            _delayms
+   305 ;; ---------------------------------------------------------------------------------
+   306 ;; (3) _SendByte                                             3     3      0     105
+   307 ;;                                              3 COMMON     3     3      0
+   308 ;;                            _delayms
+   309 ;; ---------------------------------------------------------------------------------
+   310 ;; (1) _delayms                                              3     1      2      45
+   311 ;;                                              0 COMMON     3     1      2
+   312 ;; ---------------------------------------------------------------------------------
+   313 ;; Estimated maximum stack depth 4
+   314 ;; ---------------------------------------------------------------------------------
+   315 ;; Call Graph Graphs:
+   316 ;; _main (ROOT)
+   317 ;;   _Lcd_Init
+   318 ;;     _delayms
+   319 ;;     _Lcd_WriteCmd
+   320 ;;       _CheckBusy
+   321 ;;         _SendByte
+   322 ;;           _delayms
+   323 ;;         _ReceiveByte
+   324 ;;           _delayms
+   325 ;;       _SendByte
+   326 ;;         _delayms
+   327 ;;   _hanzi_Disp
+   328 ;;     _Lcd_WriteCmd
+   329 ;;       _CheckBusy
+   330 ;;         _SendByte
+   331 ;;           _delayms
+   332 ;;         _ReceiveByte
+   333 ;;           _delayms
+   334 ;;       _SendByte
+   335 ;;         _delayms
+   336 ;;     _Lcd_WriteData
+   337 ;;       _CheckBusy
+   338 ;;         _SendByte
+   339 ;;           _delayms
+   340 ;;         _ReceiveByte
+   341 ;;           _delayms
+   342 ;;       _SendByte
+   343 ;;         _delayms
+   344 ;;   _delayms
+   345 ;;
+   346 ;; Address spaces:
+   347 ;;Name               Size   Autos  Total    Cost      Usage
+   348 ;;BITCOMMON            E      0       0       0        0.0%
+   349 ;;EEDATA             100      0       0       0        0.0%
+   350 ;;NULL                 0      0       0       0        0.0%
+   351 ;;CODE                 0      0       0       0        0.0%
+   352 ;;COMMON               E      E       E       1      100.0%
+   353 ;;BITSFR0              0      0       0       1        0.0%
+   354 ;;SFR0                 0      0       0       1        0.0%
+   355 ;;BITSFR1              0      0       0       2        0.0%
+   356 ;;SFR1                 0      0       0       2        0.0%
+   357 ;;STACK                0      0       5       2        0.0%
+   358 ;;BANK0               50      0       0       3        0.0%
+   359 ;;BITBANK1            50      0       0       4        0.0%
+   360 ;;BITSFR3              0      0       0       4        0.0%
+   361 ;;SFR3                 0      0       0       4        0.0%
+   362 ;;BANK1               50      0       0       5        0.0%
+   363 ;;BITSFR2              0      0       0       5        0.0%
+   364 ;;SFR2                 0      0       0       5        0.0%
+   365 ;;BITBANK2            50      0       0       6        0.0%
+   366 ;;BANK2               50      0       0       7        0.0%
+   367 ;;ABS                  0      0       0       8        0.0%
+   368 ;;BITBANK0            50      0       0       9        0.0%
+   369 ;;DATA                 0      0       0      10        0.0%
+   370                           
+   371                           
+   372 ;; *************** function _main *****************
+   373 ;; Defined at:
+   374 ;;		line 40 in file "Code/TestMain.c"
+   375 ;; Parameters:    Size  Location     Type
+   376 ;;		None
+   377 ;; Auto vars:     Size  Location     Type
+   378 ;;		None
+   379 ;; Return value:  Size  Location     Type
+   380 ;;		None               void
+   381 ;; Registers used:
+   382 ;;		wreg, fsr0l, fsr0h, status,2, status,0, pclath, cstack
+   383 ;; Tracked objects:
+   384 ;;		On entry : 17F/0
+   385 ;;		On exit  : 60/0
+   386 ;;		Unchanged: FFE00/0
+   387 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+   388 ;;      Params:         0       0       0       0
+   389 ;;      Locals:         0       0       0       0
+   390 ;;      Temps:          0       0       0       0
+   391 ;;      Totals:         0       0       0       0
+   392 ;;Total ram usage:        0 bytes
+   393 ;; Hardware stack levels required when called:    5
+   394 ;; This function calls:
+   395 ;;		_Lcd_Init
+   396 ;;		_hanzi_Disp
+   397 ;;		_delayms
+   398 ;; This function is called by:
+   399 ;;		Startup code after reset
+   400 ;; This function uses a non-reentrant model
+   401 ;;
+   402  06DB                     _main:	
+   403                           
+   404                           ;TestMain.c: 41: ANSEL = 0x00;
+   405                           
+   406                           ; Regs used in _main: [wreg-fsr0h+status,2+status,0+pclath+cstack]
+   407  06DB  1683               	bsf	3,5	;RP0=1, select bank1
+   408  06DC  0191               	clrf	17	;volatile
+   409                           
+   410                           ;TestMain.c: 42: Lcd_Init();
+   411  06DD  118A  2760  118A   	fcall	_Lcd_Init
+   412  06E0  3021               	movlw	(STR_1-__stringbase)& (0+255)
+   413                           
+   414                           ;TestMain.c: 43: hanzi_Disp(0,0,"厦门亿联网络");
+   415  06E1  01F9               	clrf	?_hanzi_Disp
+   416  06E2  00FA               	movwf	?_hanzi_Disp+1
+   417  06E3  3000               	movlw	0
+   418  06E4  118A  2707  118A   	fcall	_hanzi_Disp
+   419  06E7  3034               	movlw	(STR_2-__stringbase)& (0+255)
+   420                           
+   421                           ;TestMain.c: 44: hanzi_Disp(1,0,"电话是多少");
+   422  06E8  01F9               	clrf	?_hanzi_Disp
+   423  06E9  00FA               	movwf	?_hanzi_Disp+1
+   424  06EA  3001               	movlw	1
+   425  06EB  118A  2707  118A   	fcall	_hanzi_Disp
+   426  06EE                     l7951:	
+   427                           
+   428                           ;TestMain.c: 47: {
+   429                           ;TestMain.c: 48: Lcd_Init();
+   430  06EE  118A  2760  118A   	fcall	_Lcd_Init
+   431  06F1  3021               	movlw	(STR_1-__stringbase)& (0+255)
+   432                           
+   433                           ;TestMain.c: 49: hanzi_Disp(0,0,"厦门亿联网络");
+   434  06F2  01F9               	clrf	?_hanzi_Disp
+   435  06F3  00FA               	movwf	?_hanzi_Disp+1
+   436  06F4  3000               	movlw	0
+   437  06F5  118A  2707  118A   	fcall	_hanzi_Disp
+   438  06F8  3034               	movlw	(STR_2-__stringbase)& (0+255)
+   439                           
+   440                           ;TestMain.c: 50: hanzi_Disp(1,0,"电话是多少");
+   441  06F9  01F9               	clrf	?_hanzi_Disp
+   442  06FA  00FA               	movwf	?_hanzi_Disp+1
+   443  06FB  3001               	movlw	1
+   444  06FC  118A  2707  118A   	fcall	_hanzi_Disp
+   445                           
+   446                           ;TestMain.c: 51: delayms(1500);
+   447  06FF  30DC               	movlw	220
+   448  0700  00F0               	movwf	?_delayms
+   449  0701  3005               	movlw	5
+   450  0702  00F1               	movwf	?_delayms+1
+   451  0703  118A  27C2  118A   	fcall	_delayms
+   452  0706  2EEE               	goto	l7951
+   453  0707                     __end_of_main:	
+   454                           
+   455                           	psect	text89
+   456  0707                     __ptext89:	
+   457 ;; =============== function _main ends ============
+   458                           
+   459                           
+   460 ;; *************** function _hanzi_Disp *****************
+   461 ;; Defined at:
+   462 ;;		line 303 in file "Code/Driver/LCD/Lcd.c"
+   463 ;; Parameters:    Size  Location     Type
+   464 ;;  x               1    wreg     unsigned char 
+   465 ;;  y               1    9[COMMON] unsigned char 
+   466 ;;  s               1   10[COMMON] PTR const unsigned char 
+   467 ;;		 -> STR_4(16), STR_3(19), STR_2(16), STR_1(19), 
+   468 ;; Auto vars:     Size  Location     Type
+   469 ;;  x               1   13[COMMON] unsigned char 
+   470 ;; Return value:  Size  Location     Type
+   471 ;;		None               void
+   472 ;; Registers used:
+   473 ;;		wreg, fsr0l, fsr0h, status,2, status,0, pclath, cstack
+   474 ;; Tracked objects:
+   475 ;;		On entry : 60/0
+   476 ;;		On exit  : 60/0
+   477 ;;		Unchanged: FFE00/0
+   478 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+   479 ;;      Params:         2       0       0       0
+   480 ;;      Locals:         1       0       0       0
+   481 ;;      Temps:          2       0       0       0
+   482 ;;      Totals:         5       0       0       0
+   483 ;;Total ram usage:        5 bytes
+   484 ;; Hardware stack levels used:    1
+   485 ;; Hardware stack levels required when called:    4
+   486 ;; This function calls:
+   487 ;;		_Lcd_WriteCmd
+   488 ;;		_Lcd_WriteData
+   489 ;; This function is called by:
+   490 ;;		_main
+   491 ;; This function uses a non-reentrant model
+   492 ;;
+   493  0707                     _hanzi_Disp:	
+   494                           
+   495                           ; Regs used in _hanzi_Disp: [wreg-fsr0h+status,2+status,0+pclath+cstack]
+   496                           ;hanzi_Disp@x stored from wreg
+   497  0707  00FD               	movwf	hanzi_Disp@x
+   498                           
+   499                           ;Lcd.c: 304: Lcd_WriteCmd(addr_tab[8*x+y]);
+   500  0708  00FB               	movwf	??_hanzi_Disp
+   501  0709  3001               	movlw	(_addr_tab-__stringbase)& (0+255)
+   502  070A  1003               	clrc
+   503  070B  0DFB               	rlf	??_hanzi_Disp,f
+   504  070C  1003               	clrc
+   505  070D  0DFB               	rlf	??_hanzi_Disp,f
+   506  070E  1003               	clrc
+   507  070F  0DFB               	rlf	??_hanzi_Disp,f
+   508  0710  077B               	addwf	??_hanzi_Disp,w
+   509  0711  00FC               	movwf	??_hanzi_Disp+1
+   510  0712  0879               	movf	hanzi_Disp@y,w
+   511  0713  077C               	addwf	??_hanzi_Disp+1,w
+   512  0714  0084               	movwf	4
+   513  0715  118A  2002  118A   	fcall	stringdir
+   514  0718  27D4               	fcall	_Lcd_WriteCmd
+   515  0719                     l7941:	
+   516                           ;Lcd.c: 305: while(*s>0)
+   517                           
+   518  0719  087A               	movf	hanzi_Disp@s,w
+   519  071A  0084               	movwf	4
+   520  071B  118A  2002  118A   	fcall	stringdir
+   521  071E  3800               	iorlw	0
+   522  071F  1903               	btfsc	3,2
+   523  0720  0008               	return
+   524                           
+   525                           ;Lcd.c: 306: {
+   526                           ;Lcd.c: 307: Lcd_WriteData(*s);
+   527  0721  087A               	movf	hanzi_Disp@s,w
+   528  0722  0084               	movwf	4
+   529  0723  118A  2002  118A   	fcall	stringdir
+   530  0726  272A  118A         	fcall	_Lcd_WriteData
+   531                           
+   532                           ;Lcd.c: 308: s++;
+   533  0728  0AFA               	incf	hanzi_Disp@s,f
+   534  0729  2F19               	goto	l7941
+   535  072A                     __end_of_hanzi_Disp:	
+   536  072A                     __ptext91:	
+   537 ;; =============== function _Lcd_Init ends ============
+   538                           
+   539                           
+   540 ;; *************** function _Lcd_WriteData *****************
+   541 ;; Defined at:
+   542 ;;		line 278 in file "Code/Driver/LCD/Lcd.c"
+   543 ;; Parameters:    Size  Location     Type
+   544 ;;  Dbyte           1    wreg     unsigned char 
+   545 ;; Auto vars:     Size  Location     Type
+   546 ;;  Dbyte           1    8[COMMON] unsigned char 
+   547 ;; Return value:  Size  Location     Type
+   548 ;;		None               void
+   549 ;; Registers used:
+   550 ;;		wreg, status,2, status,0, pclath, cstack
+   551 ;; Tracked objects:
+   552 ;;		On entry : 60/0
+   553 ;;		On exit  : 60/0
+   554 ;;		Unchanged: FFE00/0
+   555 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+   556 ;;      Params:         0       0       0       0
+   557 ;;      Locals:         1       0       0       0
+   558 ;;      Temps:          0       0       0       0
+   559 ;;      Totals:         1       0       0       0
+   560 ;;Total ram usage:        1 bytes
+   561 ;; Hardware stack levels used:    1
+   562 ;; Hardware stack levels required when called:    3
+   563 ;; This function calls:
+   564 ;;		_CheckBusy
+   565 ;;		_SendByte
+   566 ;; This function is called by:
+   567 ;;		_hanzi_Disp
+   568 ;; This function uses a non-reentrant model
+   569 ;;
+   570  072A                     _Lcd_WriteData:	
+   571                           
+   572                           ; Regs used in _Lcd_WriteData: [wreg+status,2+status,0+pclath+cstack]
+   573                           ;Lcd_WriteData@Dbyte stored from wreg
+   574  072A  00F8               	movwf	Lcd_WriteData@Dbyte
+   575                           
+   576                           ;Lcd.c: 279: (TRISE2=(0));
+   577                           
+   578                           ;Lcd.c: 280: (RE2=(1));
+   579  072B  27FB  118A         	fcall	PL4	;call to abstracted procedure
+   580                           
+   581                           ;Lcd.c: 281: CheckBusy();
+   582  072D  27E5  118A         	fcall	_CheckBusy
+   583                           
+   584                           ;Lcd.c: 282: SendByte(0xfa);
+   585  072F  30FA               	movlw	250
+   586  0730  273B  118A         	fcall	_SendByte
+   587                           
+   588                           ;Lcd.c: 283: SendByte(0xf0&Dbyte);
+   589  0732  0878               	movf	Lcd_WriteData@Dbyte,w
+   590  0733  39F0               	andlw	240
+   591  0734  273B  118A         	fcall	_SendByte
+   592                           
+   593                           ;Lcd.c: 284: SendByte(0xf0&Dbyte<<4);
+   594  0736  0E78               	swapf	Lcd_WriteData@Dbyte,w
+   595  0737  39F0               	andlw	240
+   596  0738  273B               	fcall	_SendByte
+   597                           
+   598                           ;Lcd.c: 285: (RE2=(0));
+   599  0739  1109               	bcf	9,2
+   600  073A  0008               	return
+   601  073B                     __end_of_Lcd_WriteData:	
+   602  073B                     __ptext95:	
+   603 ;; =============== function _ReceiveByte ends ============
+   604                           
+   605                           
+   606 ;; *************** function _SendByte *****************
+   607 ;; Defined at:
+   608 ;;		line 199 in file "Code/Driver/LCD/Lcd.c"
+   609 ;; Parameters:    Size  Location     Type
+   610 ;;  Dbyte           1    wreg     unsigned char 
+   611 ;; Auto vars:     Size  Location     Type
+   612 ;;  Dbyte           1    3[COMMON] unsigned char 
+   613 ;;  i               1    5[COMMON] unsigned char 
+   614 ;;  temp            1    4[COMMON] unsigned char 
+   615 ;; Return value:  Size  Location     Type
+   616 ;;		None               void
+   617 ;; Registers used:
+   618 ;;		wreg, status,2, status,0, pclath, cstack
+   619 ;; Tracked objects:
+   620 ;;		On entry : 60/0
+   621 ;;		On exit  : 60/0
+   622 ;;		Unchanged: FFE00/0
+   623 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+   624 ;;      Params:         0       0       0       0
+   625 ;;      Locals:         3       0       0       0
+   626 ;;      Temps:          0       0       0       0
+   627 ;;      Totals:         3       0       0       0
+   628 ;;Total ram usage:        3 bytes
+   629 ;; Hardware stack levels used:    1
+   630 ;; Hardware stack levels required when called:    1
+   631 ;; This function calls:
+   632 ;;		_delayms
+   633 ;; This function is called by:
+   634 ;;		_CheckBusy
+   635 ;;		_Lcd_WriteCmd
+   636 ;;		_Lcd_WriteData
+   637 ;; This function uses a non-reentrant model
+   638 ;;
+   639  073B                     _SendByte:	
+   640                           
+   641                           ; Regs used in _SendByte: [wreg+status,2+status,0+pclath+cstack]
+   642                           ;SendByte@Dbyte stored from wreg
+   643  073B  00F3               	movwf	SendByte@Dbyte
+   644                           
+   645                           ;Lcd.c: 200: u8 i;
+   646                           ;Lcd.c: 201: u8 temp;
+   647                           ;Lcd.c: 202: for(i=0;i<8;i++)
+   648  073C  01F5               	clrf	SendByte@i
+   649  073D                     l4497:	
+   650                           
+   651                           ;Lcd.c: 203: {
+   652                           ;Lcd.c: 204: (TRISE0=(0));
+   653                           
+   654                           ;Lcd.c: 205: (RE0=(0));
+   655                           
+   656                           ;Lcd.c: 206: delayms(10);
+   657  073D  27EE  118A         	fcall	PL2	;call to abstracted procedure
+   658  073F  27C2  118A         	fcall	_delayms
+   659                           
+   660                           ;Lcd.c: 207: (TRISE1=(0));
+   661  0741  1683               	bsf	3,5	;RP0=1, select bank1
+   662  0742  3000               	movlw	0
+   663  0743  1089               	bcf	9,1
+   664                           
+   665                           ;Lcd.c: 208: temp = (Dbyte&0x80) ? 1 : 0 ;
+   666  0744  1BF3               	btfsc	SendByte@Dbyte,7
+   667  0745  3001               	movlw	1
+   668  0746  00F4               	movwf	SendByte@temp
+   669                           
+   670                           ;Lcd.c: 209: (RE1=(temp));
+   671  0747  1C74               	btfss	SendByte@temp,0
+   672  0748  2F4D               	goto	u30
+   673  0749  1283               	bcf	3,5	;RP0=0, select bank0
+   674  074A  1303               	bcf	3,6	;RP1=0, select bank0
+   675  074B  1489               	bsf	9,1
+   676  074C  2F50               	goto	l7857
+   677  074D                     u30:	
+   678  074D  1283               	bcf	3,5	;RP0=0, select bank0
+   679  074E  1303               	bcf	3,6	;RP1=0, select bank0
+   680  074F  1089               	bcf	9,1
+   681  0750                     l7857:	
+   682                           
+   683                           ;Lcd.c: 210: (RE0=(1));
+   684                           
+   685                           ;Lcd.c: 211: delayms(10);
+   686  0750  27F6  118A         	fcall	PL3	;call to abstracted procedure
+   687  0752  27C2  118A         	fcall	_delayms
+   688  0754  3008               	movlw	8
+   689                           
+   690                           ;Lcd.c: 212: (RE0=(0));
+   691  0755  1009               	bcf	9,0
+   692                           
+   693                           ;Lcd.c: 213: Dbyte=Dbyte<<1;
+   694  0756  1003               	clrc
+   695  0757  0DF3               	rlf	SendByte@Dbyte,f
+   696  0758  0AF5               	incf	SendByte@i,f
+   697  0759  0275               	subwf	SendByte@i,w
+   698  075A  1C03               	skipc
+   699  075B  2F3D               	goto	l4497
+   700                           
+   701                           ;Lcd.c: 214: }
+   702                           ;Lcd.c: 215: delayms(10);
+   703  075C  300A               	movlw	10
+   704  075D  00F0               	movwf	?_delayms
+   705  075E  01F1               	clrf	?_delayms+1
+   706  075F  2FC2               	ljmp	l7841
+   707  0760                     __end_of_SendByte:	
+   708  0760                     __ptext90:	
+   709 ;; =============== function _hanzi_Disp ends ============
+   710                           
+   711                           
+   712 ;; *************** function _Lcd_Init *****************
+   713 ;; Defined at:
+   714 ;;		line 289 in file "Code/Driver/LCD/Lcd.c"
+   715 ;; Parameters:    Size  Location     Type
+   716 ;;		None
+   717 ;; Auto vars:     Size  Location     Type
+   718 ;;		None
+   719 ;; Return value:  Size  Location     Type
+   720 ;;		None               void
+   721 ;; Registers used:
+   722 ;;		wreg, status,2, status,0, pclath, cstack
+   723 ;; Tracked objects:
+   724 ;;		On entry : 40/20
+   725 ;;		On exit  : 60/0
+   726 ;;		Unchanged: FFE00/0
+   727 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+   728 ;;      Params:         0       0       0       0
+   729 ;;      Locals:         0       0       0       0
+   730 ;;      Temps:          0       0       0       0
+   731 ;;      Totals:         0       0       0       0
+   732 ;;Total ram usage:        0 bytes
+   733 ;; Hardware stack levels used:    1
+   734 ;; Hardware stack levels required when called:    4
+   735 ;; This function calls:
+   736 ;;		_delayms
+   737 ;;		_Lcd_WriteCmd
+   738 ;; This function is called by:
+   739 ;;		_main
+   740 ;; This function uses a non-reentrant model
+   741 ;;
+   742  0760                     _Lcd_Init:	
+   743                           
+   744                           ;Lcd.c: 291: delayms(10);
+   745                           
+   746                           ; Regs used in _Lcd_Init: [wreg+status,2+status,0+pclath+cstack]
+   747  0760  300A               	movlw	10
+   748  0761  00F0               	movwf	?_delayms
+   749  0762  01F1               	clrf	?_delayms+1
+   750  0763  27C2  118A         	fcall	_delayms
+   751                           
+   752                           ;Lcd.c: 292: Lcd_WriteCmd(0x30);
+   753  0765  3030               	movlw	48
+   754  0766  27D4  118A         	fcall	_Lcd_WriteCmd
+   755                           
+   756                           ;Lcd.c: 293: delayms(1);
+   757  0768  01F0               	clrf	?_delayms
+   758  0769  0AF0               	incf	?_delayms,f
+   759  076A  01F1               	clrf	?_delayms+1
+   760  076B  27C2  118A         	fcall	_delayms
+   761                           
+   762                           ;Lcd.c: 294: Lcd_WriteCmd(0x30);
+   763  076D  3030               	movlw	48
+   764  076E  27D4  118A         	fcall	_Lcd_WriteCmd
+   765                           
+   766                           ;Lcd.c: 295: delayms(1);
+   767  0770  01F0               	clrf	?_delayms
+   768  0771  0AF0               	incf	?_delayms,f
+   769  0772  01F1               	clrf	?_delayms+1
+   770  0773  27C2  118A         	fcall	_delayms
+   771                           
+   772                           ;Lcd.c: 296: Lcd_WriteCmd(0x0c);
+   773  0775  300C               	movlw	12
+   774  0776  27D4  118A         	fcall	_Lcd_WriteCmd
+   775                           
+   776                           ;Lcd.c: 297: delayms(1);
+   777  0778  01F0               	clrf	?_delayms
+   778  0779  0AF0               	incf	?_delayms,f
+   779  077A  01F1               	clrf	?_delayms+1
+   780  077B  27C2  118A         	fcall	_delayms
+   781                           
+   782                           ;Lcd.c: 298: Lcd_WriteCmd(0x01);
+   783  077D  3001               	movlw	1
+   784  077E  27D4  118A         	fcall	_Lcd_WriteCmd
+   785                           
+   786                           ;Lcd.c: 299: delayms(10);
+   787  0780  300A               	movlw	10
+   788  0781  00F0               	movwf	?_delayms
+   789  0782  01F1               	clrf	?_delayms+1
+   790  0783  2FC2               	ljmp	l7841
+   791  0784                     __end_of_Lcd_Init:	
+   792  0784                     __ptext94:	
+   793 ;; =============== function _CheckBusy ends ============
+   794                           
+   795                           
+   796 ;; *************** function _ReceiveByte *****************
+   797 ;; Defined at:
+   798 ;;		line 222 in file "Code/Driver/LCD/Lcd.c"
+   799 ;; Parameters:    Size  Location     Type
+   800 ;;		None
+   801 ;; Auto vars:     Size  Location     Type
+   802 ;;  i               1    6[COMMON] unsigned char 
+   803 ;;  temp2           1    5[COMMON] unsigned char 
+   804 ;;  temp1           1    4[COMMON] unsigned char 
+   805 ;; Return value:  Size  Location     Type
+   806 ;;                  1    wreg      unsigned char 
+   807 ;; Registers used:
+   808 ;;		wreg, status,2, status,0, pclath, cstack
+   809 ;; Tracked objects:
+   810 ;;		On entry : 60/0
+   811 ;;		On exit  : 60/0
+   812 ;;		Unchanged: FFF9F/0
+   813 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+   814 ;;      Params:         0       0       0       0
+   815 ;;      Locals:         3       0       0       0
+   816 ;;      Temps:          1       0       0       0
+   817 ;;      Totals:         4       0       0       0
+   818 ;;Total ram usage:        4 bytes
+   819 ;; Hardware stack levels used:    1
+   820 ;; Hardware stack levels required when called:    1
+   821 ;; This function calls:
+   822 ;;		_delayms
+   823 ;; This function is called by:
+   824 ;;		_CheckBusy
+   825 ;; This function uses a non-reentrant model
+   826 ;;
+   827  0784                     _ReceiveByte:	
+   828                           
+   829                           ;Lcd.c: 223: u8 i,temp1,temp2;
+   830                           ;Lcd.c: 224: temp1 = 0;
+   831                           
+   832                           ; Regs used in _ReceiveByte: [wreg+status,2+status,0+pclath+cstack]
+   833  0784  01F4               	clrf	ReceiveByte@temp1
+   834                           
+   835                           ;Lcd.c: 225: temp2 = 0;
+   836  0785  01F5               	clrf	ReceiveByte@temp2
+   837                           
+   838                           ;Lcd.c: 226: for(i=0;i<8;i++)
+   839  0786  01F6               	clrf	ReceiveByte@i
+   840                           
+   841                           ;Lcd.c: 227: {
+   842                           ;Lcd.c: 228: temp1=temp1<<1;
+   843  0787  1003               	clrc
+   844  0788                     L1:	
+   845  0788  0DF4               	rlf	ReceiveByte@temp1,f
+   846                           
+   847                           ;Lcd.c: 229: (TRISE0=(0));
+   848                           
+   849                           ;Lcd.c: 230: (RE0=(0));
+   850                           
+   851                           ;Lcd.c: 231: delayms(10);
+   852  0789  27EE  118A         	fcall	PL2	;call to abstracted procedure
+   853  078B  27C2  118A         	fcall	_delayms
+   854                           
+   855                           ;Lcd.c: 232: (RE0=(1));
+   856                           
+   857                           ;Lcd.c: 233: delayms(10);
+   858  078D  27F6  118A         	fcall	PL3	;call to abstracted procedure
+   859  078F  27C2  118A         	fcall	_delayms
+   860                           
+   861                           ;Lcd.c: 234: (RE0=(0));
+   862  0791  1009               	bcf	9,0
+   863                           
+   864                           ;Lcd.c: 235: (TRISE1=(1));
+   865  0792  1683               	bsf	3,5	;RP0=1, select bank1
+   866  0793  1489               	bsf	9,1
+   867                           
+   868                           ;Lcd.c: 236: if((RE1)) temp1++;
+   869  0794  1283               	bcf	3,5	;RP0=0, select bank0
+   870  0795  1889               	btfsc	9,1
+   871  0796  0AF4               	incf	ReceiveByte@temp1,f
+   872  0797  3008               	movlw	8
+   873  0798  0AF6               	incf	ReceiveByte@i,f
+   874  0799  0276               	subwf	ReceiveByte@i,w
+   875  079A  1C03               	skipc
+   876  079B  2F88               	goto	L1
+   877                           
+   878                           ;Lcd.c: 237: }
+   879                           ;Lcd.c: 238: delayms(10);
+   880  079C  300A               	movlw	10
+   881  079D  00F0               	movwf	?_delayms
+   882  079E  01F1               	clrf	?_delayms+1
+   883  079F  27C2  118A         	fcall	_delayms
+   884                           
+   885                           ;Lcd.c: 239: for(i=0;i<8;i++)
+   886  07A1  01F6               	clrf	ReceiveByte@i
+   887                           
+   888                           ;Lcd.c: 240: {
+   889                           ;Lcd.c: 241: temp2=temp2<<1;
+   890  07A2  1003               	clrc
+   891  07A3                     L2:	
+   892  07A3  0DF5               	rlf	ReceiveByte@temp2,f
+   893                           
+   894                           ;Lcd.c: 242: (TRISE0=(0));
+   895                           
+   896                           ;Lcd.c: 243: (RE0=(0));
+   897                           
+   898                           ;Lcd.c: 244: delayms(10);
+   899  07A4  27EE  118A         	fcall	PL2	;call to abstracted procedure
+   900  07A6  27C2  118A         	fcall	_delayms
+   901                           
+   902                           ;Lcd.c: 245: (RE0=(1));
+   903                           
+   904                           ;Lcd.c: 246: delayms(10);
+   905  07A8  27F6  118A         	fcall	PL3	;call to abstracted procedure
+   906  07AA  27C2  118A         	fcall	_delayms
+   907                           
+   908                           ;Lcd.c: 247: (RE0=(0));
+   909  07AC  1009               	bcf	9,0
+   910                           
+   911                           ;Lcd.c: 248: (TRISE1=(1));
+   912  07AD  1683               	bsf	3,5	;RP0=1, select bank1
+   913  07AE  1489               	bsf	9,1
+   914                           
+   915                           ;Lcd.c: 249: if((RE1)) temp2++;
+   916  07AF  1283               	bcf	3,5	;RP0=0, select bank0
+   917  07B0  1889               	btfsc	9,1
+   918  07B1  0AF5               	incf	ReceiveByte@temp2,f
+   919  07B2  3008               	movlw	8
+   920  07B3  0AF6               	incf	ReceiveByte@i,f
+   921  07B4  0276               	subwf	ReceiveByte@i,w
+   922  07B5  1C03               	skipc
+   923  07B6  2FA3               	goto	L2
+   924                           
+   925                           ;Lcd.c: 250: }
+   926                           ;Lcd.c: 251: delayms(10);
+   927  07B7  300A               	movlw	10
+   928  07B8  00F0               	movwf	?_delayms
+   929  07B9  01F1               	clrf	?_delayms+1
+   930  07BA  27C2               	fcall	_delayms
+   931                           
+   932                           ;Lcd.c: 252: return ((0xf0&temp1)+(0x0f&temp2));
+   933  07BB  30F0               	movlw	240
+   934  07BC  0574               	andwf	ReceiveByte@temp1,w
+   935  07BD  00F3               	movwf	??_ReceiveByte
+   936  07BE  0875               	movf	ReceiveByte@temp2,w
+   937  07BF  390F               	andlw	15
+   938  07C0  0773               	addwf	??_ReceiveByte,w
+   939  07C1  0008               	return
+   940  07C2                     __end_of_ReceiveByte:	
+   941  07C2                     __ptext96:	
+   942 ;; =============== function _SendByte ends ============
+   943                           
+   944                           
+   945 ;; *************** function _delayms *****************
+   946 ;; Defined at:
+   947 ;;		line 187 in file "Code/Driver/LCD/Lcd.c"
+   948 ;; Parameters:    Size  Location     Type
+   949 ;;  t               2    0[COMMON] unsigned short 
+   950 ;; Auto vars:     Size  Location     Type
+   951 ;;  i               1    2[COMMON] unsigned char 
+   952 ;; Return value:  Size  Location     Type
+   953 ;;		None               void
+   954 ;; Registers used:
+   955 ;;		wreg, status,2, status,0
+   956 ;; Tracked objects:
+   957 ;;		On entry : 40/0
+   958 ;;		On exit  : 40/0
+   959 ;;		Unchanged: FFFBF/0
+   960 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+   961 ;;      Params:         2       0       0       0
+   962 ;;      Locals:         1       0       0       0
+   963 ;;      Temps:          0       0       0       0
+   964 ;;      Totals:         3       0       0       0
+   965 ;;Total ram usage:        3 bytes
+   966 ;; Hardware stack levels used:    1
+   967 ;; This function calls:
+   968 ;;		Nothing
+   969 ;; This function is called by:
+   970 ;;		_SendByte
+   971 ;;		_ReceiveByte
+   972 ;;		_Lcd_Init
+   973 ;;		_main
+   974 ;; This function uses a non-reentrant model
+   975 ;;
+   976  07C2                     _delayms:	
+   977  07C2                     l7841:	
+   978                           ;Lcd.c: 188: u8 i;
+   979                           ;Lcd.c: 189: while(t--)
+   980                           
+   981                           ; Regs used in _delayms: [wreg+status,2+status,0]
+   982                           
+   983  07C2  3001               	movlw	1
+   984  07C3  02F0               	subwf	delayms@t,f
+   985  07C4  3000               	movlw	0
+   986  07C5  1C03               	skipc
+   987  07C6  03F1               	decf	delayms@t+1,f
+   988  07C7  02F1               	subwf	delayms@t+1,f
+   989  07C8  0A70               	incf	delayms@t,w
+   990  07C9  1903               	skipnz
+   991  07CA  0A71               	incf	delayms@t+1,w
+   992  07CB  1903               	btfsc	3,2
+   993  07CC  0008               	return
+   994                           
+   995                           ;Lcd.c: 190: {
+   996                           ;Lcd.c: 191: for(i=0;i<125;i++);
+   997  07CD  01F2               	clrf	delayms@i
+   998  07CE                     l7837:	
+   999  07CE  307D               	movlw	125
+  1000  07CF  0AF2               	incf	delayms@i,f
+  1001  07D0  0272               	subwf	delayms@i,w
+  1002  07D1  1803               	btfsc	3,0
+  1003  07D2  2FC2               	goto	l7841
+  1004  07D3  2FCE               	goto	l7837
+  1005  07D4                     __end_of_delayms:	
+  1006  07D4                     __ptext92:	
+  1007 ;; =============== function _Lcd_WriteData ends ============
+  1008                           
+  1009                           
+  1010 ;; *************** function _Lcd_WriteCmd *****************
+  1011 ;; Defined at:
+  1012 ;;		line 266 in file "Code/Driver/LCD/Lcd.c"
+  1013 ;; Parameters:    Size  Location     Type
+  1014 ;;  Cbyte           1    wreg     unsigned char 
+  1015 ;; Auto vars:     Size  Location     Type
+  1016 ;;  Cbyte           1    8[COMMON] unsigned char 
+  1017 ;; Return value:  Size  Location     Type
+  1018 ;;		None               void
+  1019 ;; Registers used:
+  1020 ;;		wreg, status,2, status,0, pclath, cstack
+  1021 ;; Tracked objects:
+  1022 ;;		On entry : 40/0
+  1023 ;;		On exit  : 60/0
+  1024 ;;		Unchanged: FFE00/0
+  1025 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+  1026 ;;      Params:         0       0       0       0
+  1027 ;;      Locals:         1       0       0       0
+  1028 ;;      Temps:          0       0       0       0
+  1029 ;;      Totals:         1       0       0       0
+  1030 ;;Total ram usage:        1 bytes
+  1031 ;; Hardware stack levels used:    1
+  1032 ;; Hardware stack levels required when called:    3
+  1033 ;; This function calls:
+  1034 ;;		_CheckBusy
+  1035 ;;		_SendByte
+  1036 ;; This function is called by:
+  1037 ;;		_Lcd_Init
+  1038 ;;		_hanzi_Disp
+  1039 ;; This function uses a non-reentrant model
+  1040 ;;
+  1041  07D4                     _Lcd_WriteCmd:	
+  1042                           
+  1043                           ; Regs used in _Lcd_WriteCmd: [wreg+status,2+status,0+pclath+cstack]
+  1044                           ;Lcd_WriteCmd@Cbyte stored from wreg
+  1045  07D4  00F8               	movwf	Lcd_WriteCmd@Cbyte
+  1046                           
+  1047                           ;Lcd.c: 268: (TRISE2=(0));
+  1048                           
+  1049                           ;Lcd.c: 269: (RE2=(1));
+  1050  07D5  27FB  118A         	fcall	PL4	;call to abstracted procedure
+  1051                           
+  1052                           ;Lcd.c: 270: CheckBusy();
+  1053  07D7  27E5  118A         	fcall	_CheckBusy
+  1054                           
+  1055                           ;Lcd.c: 271: SendByte(0xf8);
+  1056  07D9  30F8               	movlw	248
+  1057  07DA  273B  118A         	fcall	_SendByte
+  1058                           
+  1059                           ;Lcd.c: 272: SendByte(0xf0&Cbyte);
+  1060  07DC  0878               	movf	Lcd_WriteCmd@Cbyte,w
+  1061  07DD  39F0               	andlw	240
+  1062  07DE  273B  118A         	fcall	_SendByte
+  1063                           
+  1064                           ;Lcd.c: 273: SendByte(0xf0&Cbyte<<4);
+  1065  07E0  0E78               	swapf	Lcd_WriteCmd@Cbyte,w
+  1066  07E1  39F0               	andlw	240
+  1067  07E2  273B               	fcall	_SendByte
+  1068                           
+  1069                           ;Lcd.c: 274: (RE2=(0));
+  1070  07E3  1109               	bcf	9,2
+  1071  07E4  0008               	return
+  1072  07E5                     __end_of_Lcd_WriteCmd:	
+  1073  07E5                     __ptext93:	
+  1074 ;; =============== function _Lcd_WriteCmd ends ============
+  1075                           
+  1076                           
+  1077 ;; *************** function _CheckBusy *****************
+  1078 ;; Defined at:
+  1079 ;;		line 260 in file "Code/Driver/LCD/Lcd.c"
+  1080 ;; Parameters:    Size  Location     Type
+  1081 ;;		None
+  1082 ;; Auto vars:     Size  Location     Type
+  1083 ;;		None
+  1084 ;; Return value:  Size  Location     Type
+  1085 ;;		None               void
+  1086 ;; Registers used:
+  1087 ;;		wreg, status,2, status,0, pclath, cstack
+  1088 ;; Tracked objects:
+  1089 ;;		On entry : 60/0
+  1090 ;;		On exit  : 60/0
+  1091 ;;		Unchanged: FFE00/0
+  1092 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+  1093 ;;      Params:         0       0       0       0
+  1094 ;;      Locals:         0       0       0       0
+  1095 ;;      Temps:          1       0       0       0
+  1096 ;;      Totals:         1       0       0       0
+  1097 ;;Total ram usage:        1 bytes
+  1098 ;; Hardware stack levels used:    1
+  1099 ;; Hardware stack levels required when called:    2
+  1100 ;; This function calls:
+  1101 ;;		_SendByte
+  1102 ;;		_ReceiveByte
+  1103 ;; This function is called by:
+  1104 ;;		_Lcd_WriteCmd
+  1105 ;;		_Lcd_WriteData
+  1106 ;; This function uses a non-reentrant model
+  1107 ;;
+  1108  07E5                     _CheckBusy:	
+  1109  07E5                     l4511:	
+  1110                           ; Regs used in _CheckBusy: [wreg+status,2+status,0+pclath+cstack]
+  1111                           ;Lcd.c: 261: do SendByte(0xfc);
+  1112                           
+  1113  07E5  30FC               	movlw	252
+  1114  07E6  273B  118A         	fcall	_SendByte
+  1115                           
+  1116                           ;Lcd.c: 262: while(0x80&ReceiveByte());
+  1117  07E8  2784  118A         	fcall	_ReceiveByte
+  1118  07EA  00F7               	movwf	??_CheckBusy
+  1119  07EB  1FF7               	btfss	??_CheckBusy,7
+  1120  07EC  0008               	return
+  1121  07ED  2FE5               	goto	l4511
+  1122  07EE                     __end_of_CheckBusy:	
+  1123  07EE                     PL2:	
+  1124  07EE  1683               	bsf	3,5	;RP0=1, select bank1
+  1125  07EF  1009               	bcf	9,0
+  1126  07F0  1283               	bcf	3,5	;RP0=0, select bank0
+  1127  07F1  300A               	movlw	10
+  1128  07F2  1009               	bcf	9,0
+  1129  07F3  00F0               	movwf	?_delayms
+  1130  07F4  01F1               	clrf	?_delayms+1
+  1131  07F5  0008               	return
+  1132  07F6                     PL3:	
+  1133  07F6  300A               	movlw	10
+  1134  07F7  1409               	bsf	9,0
+  1135  07F8  00F0               	movwf	?_delayms
+  1136  07F9  01F1               	clrf	?_delayms+1
+  1137  07FA  0008               	return
+  1138  07FB                     PL4:	
+  1139  07FB  1683               	bsf	3,5	;RP0=1, select bank1
+  1140  07FC  1109               	bcf	9,2
+  1141  07FD  1283               	bcf	3,5	;RP0=0, select bank0
+  1142  07FE  1509               	bsf	9,2
+  1143  07FF  0008               	return
+  1144                           
+  1145                           	psect	text97
+  1146  0000                     __ptext97:	
+  1147 ;; =============== function _delayms ends ============
+  1148                           
+  1149  007E                     btemp	set	126	;btemp
+  1150  007E                     wtemp0	set	126
+
+
+HI-TECH Software PICC Macro Assembler V9.83 build 10920 
+Symbol Table                                                                                   Fri Oct 31 21:23:02 2014
+
+                     pc 0002                      u30 074D                      fsr 0004                     _RE0 0048  
+                   _RE1 0049                     _RE2 004A             hanzi_Disp@s 007A             hanzi_Disp@x 007D  
+           hanzi_Disp@y 0079                     fsr0 0004                    l4511 07E5                    l4513 0000  
+                  l4522 0000                    l4508 0000                    l4516 0000                    l4519 0000  
+                  l4528 0000                    l4494 0000                    l4497 073D                    l4499 0000  
+                  l7901 0000                    l7911 0000                    l7903 0000                    l7841 07C2  
+                  l7905 0000                    l7921 0000                    l7851 0000                    l7843 0000  
+                  l7915 0000                    l7907 0000                    l7923 0000                    l7931 0000  
+                  l7837 07CE                    l7861 0000                    l7853 0000                    l7925 0000  
+                  l7933 0000                    l7941 0719                    l7839 0000                    l7863 0000  
+                  l7855 0000                    l7871 0000                    l7919 0000                    l7927 0000  
+                  l7935 0000                    l7951 06EE                    l7943 0000                    l7865 0000  
+                  l7857 0750                    l7849 0000                    l7881 0000                    l7929 0000  
+                  l7953 0000                    l7945 0000                    l7867 0000                    l7859 0000  
+                  l7883 0000                    l7939 0000                    l7955 0000                    l7947 0000  
+                  l7893 0000                    l7885 0000                    l7877 0000                    l7957 0000  
+                  l7949 0000                    l7879 0000                    l7889 0000                    l7899 0000  
+                  STR_1 0028                    STR_2 003B                    STR_3 0028                    STR_4 003B  
+                  _main 06DB                    btemp 007E                    start 0000                   ?_main 0070  
+                 _ANSEL 0091         __end_of_delayms 07D4    __end_of_Lcd_WriteCmd 07E5           ??_ReceiveByte 0073  
+                 pclath 000A                   status 0003                   wtemp0 007E        __end_of_Lcd_Init 0784  
+          __end_of_main 0707      __size_of_CheckBusy 0009                  ??_main 007E        __end_of_SendByte 0760  
+                _TRISE0 0448                  _TRISE1 0449                  _TRISE2 044A     __end_of_ReceiveByte 07C2  
+             ??_delayms 0072   __end_of_Lcd_WriteData 073B       __end_of_CheckBusy 07EE          __pcstackCOMMON 0070  
+ __size_of_Lcd_WriteCmd 0011               ?_Lcd_Init 0070             _ReceiveByte 0784               ?_SendByte 0070  
+            __pmaintext 06DB            _Lcd_WriteCmd 07D4              _hanzi_Disp 0707        ReceiveByte@temp1 0074  
+      ReceiveByte@temp2 0075              ??_Lcd_Init 0079              ??_SendByte 0073       Lcd_WriteCmd@Cbyte 0078  
+          ReceiveByte@i 0076                 _delayms 07C2    end_of_initialization 06D8             ?_hanzi_Disp 0079  
+          SendByte@temp 0074               _CheckBusy 07E5     start_initialization 06D8               SendByte@i 0075  
+     __size_of_Lcd_Init 0024            ?_ReceiveByte 0070              ?_CheckBusy 0070  __size_of_Lcd_WriteData 0011  
+   __size_of_hanzi_Disp 0023       __size_of_SendByte 0025                ?_delayms 0070               __pstrings 0002  
+         _Lcd_WriteData 072A             ??_CheckBusy 0077             __stringbase 0007          ?_Lcd_WriteData 0070  
+          ??_hanzi_Disp 007B                _Lcd_Init 0760    __size_of_ReceiveByte 003E                _SendByte 073B  
+    __end_of_hanzi_Disp 072A      Lcd_WriteData@Dbyte 0078        __size_of_delayms 0012                _addr_tab 0008  
+              __ptext90 0760                __ptext91 072A                __ptext92 07D4                __ptext93 07E5  
+              __ptext94 0784                __ptext95 073B                __ptext96 07C2                __ptext97 0000  
+              __ptext89 0707           __size_of_main 002C                delayms@i 0072                delayms@t 0070  
+         ?_Lcd_WriteCmd 0070         ??_Lcd_WriteData 0078               stringcode 0002          ??_Lcd_WriteCmd 0078  
+              stringdir 0002                stringtab 0002           SendByte@Dbyte 0073  
