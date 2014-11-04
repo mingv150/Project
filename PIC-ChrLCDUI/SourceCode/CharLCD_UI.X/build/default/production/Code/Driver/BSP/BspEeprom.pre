@@ -1,5 +1,5 @@
 
-# 1 "Code/TestMain.c"
+# 1 "Code/Driver/BSP/BspEeprom.c"
 
 # 95 "c:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f914.h"
 volatile unsigned char INDF @ 0x000;
@@ -2280,7 +2280,7 @@ extern void memcpyee(eeprom unsigned char *to, const unsigned char *from, unsign
 #pragma inline(_delay)
 extern void _delay(unsigned long);
 
-# 25 "Code/Common.h"
+# 25 "Code/Driver/BSP/../../Common.h"
 typedef bit bool;
 typedef unsigned char u8;
 typedef signed char s8;
@@ -2291,135 +2291,82 @@ typedef signed short long int s24;
 typedef unsigned long int u32;
 typedef signed long int s32;
 
-# 27 "Code/./Driver/BSP/BspSystem.h"
-void BspSystem_TmrInit(void);
+# 27 "Code/Driver/BSP/BspEeprom.c"
+static u8 BspEeprom_Purpose;
 
-# 81 "Code/./Driver/BSP/BspGpio.h"
-void BspGpio_Buzzer(void);
-
-# 27 "Code/./Driver/BSP/BspEeprom.h"
-void BspEeprom_SaveParam(u8 StartAddr,const u8 *pSrc,u8 Size);
-void BspEeprom_GetParam(u8 StartAddr,u8 *pDes,u8 Size);
-
-# 36 "Code/./Driver/LCD/Lcd.h"
-void Lcd_Delay(u16 t);
-void Lcd_Init(void);
-void Lcd_StrDisp(u8 x,u8 y,const u8 *s);
-void Lcd_ClrScreen(void);
-
-# 19 "Code/./Driver/LCD/LcdMenu.h"
-typedef struct
+# 36
+void BspEeprom_SaveParam(u8 StartAddr,const u8 *pSrc,u8 Size)
 {
-u16 PaperNum;
-u8 ShuaJiao;
-u8 ShuaLiao;
-u8 Startup;
-u8 Back;
-}t_SetupParam;
+u8 i;
+u8 GIETemp = 0;
+u8 ReadTemp = 0;
 
-typedef struct
+for(i=0;i<Size;i++)
 {
-u8 num[3][10];
-}t_FactoryParam;
-
-# 45
-void LcdMenu_Factory(u8 KeyEvent,t_FactoryParam *pParam);
-void LcdMenu_Setup(u8 KeyEvent,t_SetupParam *pParam);
-void LcdMenu_Normal(u8 KeyEvent,u16 PaperNum);
-void LcdMenu_Welcome(void);
-
-# 15 "Code/./Driver/Key/Key.h"
-enum event
+do
 {
-EVENT_NONE = 0,
-EVENT_KEYUPS,
-EVENT_KEYUPL,
-EVENT_KEYDOWNS,
-EVENT_KEYDOWNL,
-EVENT_KEYLEFTS,
-EVENT_KEYLEFTL,
-EVENT_KEYRIGHTS,
-EVENT_KEYRIGHTL,
-EVENT_KEYPLUSS,
-EVENT_KEYPLUSL,
-EVENT_KEYMINUSS,
-EVENT_KEYMINUSL,
-EVENT_KEYSETUPS,
-EVENT_KEYSETUPL,
-EVENT_KEYENTERS,
-EVENT_KEYENTERL,
-EVENT_MAX
-};
+do{;}
+while(WR == 1);
+EEADR = (StartAddr+i);
+EEDATL = *(pSrc+i);
+GIETemp = 0;
+if(GIE)
+GIETemp = 1;
+GIE = 0;
+EEPGD = 0;
+WREN = 1;
+EECON2 = 0x55;
+EECON2 = 0xAA;
+WR = 1;
+do{;}
+while(WR == 1);
+WREN = 0;
+EEIF = 0;
 
-# 92
-u16 Key_Scan(void);
-u16 Key_Debounce(u16 KeyState);
-void Key_PutEvent(u16 KeyValue);
-u8 Key_GetEvent(void);
-
-# 17 "Code/TestMain.h"
-typedef enum
-{
-TestMain_NORMALMOD = 0,
-TestMain_SETUPMOD,
-TestMain_FACTORYMOD,
-TestMain_MAXMOD
-}t_Sysmod;
-
-# 33 "Code/TestMain.c"
-u8 PaperNum;
-t_SetupParam SetupParam;
-t_FactoryParam FactoryParam;
-u8 u8_Timer_Flash = 0;
-
-# 45
-void main(void)
-{
-
-t_Sysmod SystemMode = TestMain_NORMALMOD;
-u8 Key;
-
-Lcd_Init();
-
-BspSystem_TmrInit();
-LcdMenu_Welcome();
-Lcd_Delay(10000);
-
-BspEeprom_GetParam(0,&SetupParam,sizeof(t_SetupParam));
-BspEeprom_GetParam(20,&FactoryParam,sizeof(t_FactoryParam));
-
-Lcd_ClrScreen();
-
-while(1)
-{
-
-
-Key = Key_GetEvent();
-
-if(Key == EVENT_KEYSETUPS)
-{
-SystemMode++;
-SystemMode = (SystemMode >= TestMain_MAXMOD) ? TestMain_NORMALMOD : SystemMode;
-Lcd_ClrScreen();
+do{;}
+while(RD == 1);
+EEADR = (StartAddr+i);
+EEPGD = 0;
+RD = 1;
+do{;}
+while(RD == 1);
+ReadTemp = EEDATL;
+if(GIETemp)
+GIE = 1;
+}while(ReadTemp != *(pSrc+i));
+}
 }
 
-switch(SystemMode)
+# 86
+void BspEeprom_GetParam(u8 StartAddr,u8 *pDes,u8 Size)
 {
-case TestMain_NORMALMOD:
-LcdMenu_Normal(Key,PaperNum);
-break;
+u8 i;
+u8 temp1;
+u8 temp2;
 
-case TestMain_SETUPMOD:
-LcdMenu_Setup(Key,&SetupParam);
-break;
+for(i=0;i<Size;i++)
+{
+do
+{
+do{;}
+while(RD==1);
+EEADR=(StartAddr+i);
+EEPGD=0;
+RD=1;
+do{;}
+while(RD==1);
+temp1 = EEDATL;
 
-case TestMain_FACTORYMOD:
-LcdMenu_Factory(Key,&FactoryParam);
-break;
+do{;}
+while(RD==1);
+EEADR=(StartAddr+i);
+EEPGD=0;
+RD=1;
+do{;}
+while(RD==1);
+temp2 = EEDATL;
+}while(temp1^temp2);
+
+*(pDes+i) = temp2;
 }
-
-
-
-}
-
 }

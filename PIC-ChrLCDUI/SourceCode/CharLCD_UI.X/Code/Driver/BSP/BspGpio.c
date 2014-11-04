@@ -2,7 +2,7 @@
 Copyright (C), 2014, Mingv150, All rights reserved
 FileName: /Driver/BSP/BspGpio.c
 Description:  
-Author:  
+Author:  mingv150@163.com
 Version:  
 Changelog: 
 *****************************************************************************/
@@ -35,6 +35,5 @@ Notes:
 *****************************************************************************/
 void BspGpio_Buzzer(void)
 {
-	BspGpio_BUZZERC(0);
-	BspGpio_BUZZEROUT(0);
+
 }	

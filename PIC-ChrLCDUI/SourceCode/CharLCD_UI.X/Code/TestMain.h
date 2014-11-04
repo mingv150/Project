@@ -2,7 +2,7 @@
 Copyright (C), 2014, Mingv150, All rights reserved
 FileName: /Layer/Module/TestMain.h
 Description:  
-Author:  
+Author:  mingv150@163.com
 Version:  
 Changelog: 
 *****************************************************************************/
@@ -14,6 +14,14 @@ Changelog:
 /*Macro Definition*/
 #define TestMain_PURPOSE 1
 /*Data Type Specification*/
+typedef enum
+{
+	TestMain_NORMALMOD = 0,
+	TestMain_SETUPMOD,
+	TestMain_FACTORYMOD,
+	TestMain_MAXMOD
+}t_Sysmod;
+
 
 #ifdef _TestMain_C_
 /*For local users*/

@@ -2,7 +2,7 @@
 Copyright (C), 2014, Mingv150, All rights reserved
 FileName: /Layer/Module/TestMain.c
 Description:  
-Author:  
+Author:  mingv150@163.com
 Version:  
 Changelog: 
 *****************************************************************************/
@@ -21,6 +21,7 @@ Local header file:
 *****************************************************************************/
 #include "./Driver/BSP/BspSystem.h"
 #include "./Driver/BSP/BspGpio.h"
+#include "./Driver/BSP/BspEeprom.h"
 #include "./Driver/LCD/Lcd.h"
 #include "./Driver/LCD/LcdMenu.h"
 #include "./Driver/Key/Key.h"
@@ -29,9 +30,12 @@ Local header file:
 /****************************************************************************
 Global Data Structure:
 *****************************************************************************/
+u8 PaperNum;
 t_SetupParam SetupParam;
-u8 u8_Timer_Flash;
-u8 u8_Timer_scan;
+t_FactoryParam FactoryParam;
+u8 u8_Timer_Flash = 0;
+
+
 /*******************************************************************************
 *Function: void main()
 *Description: main function
@@ -40,29 +44,51 @@ u8 u8_Timer_scan;
 *******************************************************************************/
 void main(void)
 {
-	u16 count = 0;
-  u16 KeyTemp;
-  u8 SystemMode = 0;
+
+  t_Sysmod SystemMode = TestMain_NORMALMOD;
   u8 Key;
   
   Lcd_Init();
 
   BspSystem_TmrInit();
   LcdMenu_Welcome();
-  delayms(1500);
+  Lcd_Delay(10000);
+
+  BspEeprom_GetParam(SETUPPARAM_OFFSET,&SetupParam,sizeof(t_SetupParam));
+  BspEeprom_GetParam(FACTORYPARAM_OFFSET,&FactoryParam,sizeof(t_FactoryParam));
+
+  Lcd_ClrScreen();
 
 	while(1)
  	{
-
-      if(u8_Timer_scan)
-      {
-        KeyTemp = Key_Scan();
-        Key_Debounce(KeyTemp);
-      }
+      //TRISD7=0;
 
       Key = Key_GetEvent();
-      LcdMenu_Setup(Key,&SetupParam);
 
-  	}
+      if(Key == EVENT_KEYSETUPS)
+        {
+          SystemMode++;
+          SystemMode = (SystemMode >= TestMain_MAXMOD) ? TestMain_NORMALMOD : SystemMode; 
+          Lcd_ClrScreen();   
+        }
+
+        switch(SystemMode)
+        {
+          case TestMain_NORMALMOD:
+            LcdMenu_Normal(Key,PaperNum);
+            break;
+
+          case TestMain_SETUPMOD:
+            LcdMenu_Setup(Key,&SetupParam);  
+            break;
+
+          case TestMain_FACTORYMOD:
+            LcdMenu_Factory(Key,&FactoryParam);
+            break;
+        }
+
+      //RD7=~RD7;
+
+  }
 
 }

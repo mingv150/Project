@@ -1,7 +1,7 @@
 
 # 1 "Code/Driver/Key/Key.c"
 
-# 95 "D:\Program Files (x86)\HI-TECH Software\PICC\9.83\include\pic16f914.h"
+# 95 "c:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f914.h"
 volatile unsigned char INDF @ 0x000;
 
 
@@ -2262,21 +2262,21 @@ unsigned EEWR : 1;
 volatile unsigned char EECON2 @ 0x18D;
 
 
-# 27 "D:\Program Files (x86)\HI-TECH Software\PICC\9.83\include\pic.h"
+# 27 "c:\Program Files\HI-TECH Software\PICC\9.83\include\pic.h"
 #pragma inline(_nop)
 extern void _nop(void);
 
 # 80
 extern unsigned int flash_read(unsigned short addr);
 
-# 41 "D:\Program Files (x86)\HI-TECH Software\PICC\9.83\include\eeprom_routines.h"
+# 41 "c:\Program Files\HI-TECH Software\PICC\9.83\include\eeprom_routines.h"
 extern unsigned char eeprom_write(unsigned char addr, unsigned char value);
 extern unsigned char eeprom_read(unsigned char addr);
 extern void eecpymem(volatile unsigned char *to, eeprom unsigned char *from, unsigned char size);
 extern void memcpyee(eeprom unsigned char *to, const unsigned char *from, unsigned char size);
 
 
-# 153 "D:\Program Files (x86)\HI-TECH Software\PICC\9.83\include\pic.h"
+# 153 "c:\Program Files\HI-TECH Software\PICC\9.83\include\pic.h"
 #pragma inline(_delay)
 extern void _delay(unsigned long);
 
@@ -2291,7 +2291,7 @@ typedef signed short long int s24;
 typedef unsigned long int u32;
 typedef signed long int s32;
 
-# 67 "Code/Driver/Key/../BSP/BspGpio.h"
+# 81 "Code/Driver/Key/../BSP/BspGpio.h"
 void BspGpio_Buzzer(void);
 
 # 15 "Code/Driver/Key/Key.h"
@@ -2310,20 +2310,17 @@ EVENT_KEYPLUSS,
 EVENT_KEYPLUSL,
 EVENT_KEYMINUSS,
 EVENT_KEYMINUSL,
-
-EVENT_KEY7S,
-EVENT_KEY7L,
-EVENT_KEY8S,
-EVENT_KEY8L,
-EVENT_KEY9S,
-EVENT_KEY9L,
+EVENT_KEYSETUPS,
+EVENT_KEYSETUPL,
+EVENT_KEYENTERS,
+EVENT_KEYENTERL,
 EVENT_MAX
 };
 
-# 75
+# 81
 typedef struct EventMage
 {
-u8 EventFiFo[4];
+u8 EventFiFo[8];
 u8 FiFoHead;
 u8 FiFoTail;
 }t_EventMage;
@@ -2331,23 +2328,12 @@ u8 FiFoTail;
 # 29 "Code/Driver/Key/Key.c"
 static t_EventMage st_Event_EventMage =
 {
-{0,0,0,0},
+{0,0,0,0,0,0},
 0,
 0
 };
 
 # 43
-void Key_PutEventToTail(u8 key)
-{
-if(st_Event_EventMage.FiFoHead == (st_Event_EventMage.FiFoTail+1)%4)
-{
-return;
-}
-st_Event_EventMage.EventFiFo[st_Event_EventMage.FiFoTail] = key;
-st_Event_EventMage.FiFoTail = (++st_Event_EventMage.FiFoTail)%4;
-}
-
-# 60
 u8 Key_GetEvent(void)
 {
 u8 key;
@@ -2357,179 +2343,203 @@ if(st_Event_EventMage.FiFoHead == st_Event_EventMage.FiFoTail)
 return EVENT_NONE;
 }
 key = st_Event_EventMage.EventFiFo[st_Event_EventMage.FiFoHead];
-st_Event_EventMage.FiFoHead = (++st_Event_EventMage.FiFoHead)%4;
+st_Event_EventMage.FiFoHead = (++st_Event_EventMage.FiFoHead)%8;
 return key;
 }
 
-# 80
+# 63
 void Key_PutEvent(u16 KeyValue)
 {
 u8 temp;
 
 switch(KeyValue)
 {
-case 0x0008:
-temp = EVENT_KEY7S;
-break;
-
-case (0x0080+0x8000):
-temp = EVENT_KEY7S;
-break;
-
-case 0x0002:
-temp = EVENT_KEY7S;
-break;
-
-case (0x0002+0x8000):
-temp = EVENT_KEY7S;
-break;
-
-case 0x0001:
-temp = EVENT_KEYDOWNS;
-break;
-
-case (0x0008+0x8000):
-temp = EVENT_KEYDOWNL;
-break;
-
-case 0x0080:
-temp = EVENT_KEYPLUSS;
-break;
-
-case (0x0010+0x8000):
-temp = EVENT_KEYPLUSL;
-break;
-
-case 0x0040:
-temp = EVENT_KEYMINUSS;
-break;
-
-case (0x0004+0x8000):
-temp = EVENT_KEYMINUSL;
-break;
-
-case 0x0020:
-temp = EVENT_KEY7S;
-break;
-
-case (0x0020+0x8000):
-temp = EVENT_KEY7S;
-break;
-
-case 0x0004:
+case 0x0200:
 temp = EVENT_KEYUPS;
 break;
 
-case (0x0001+0x8000):
+case (0x0020+0x8000):
 temp = EVENT_KEYUPL;
 break;
 
-case 0x0010:
-temp = EVENT_KEY8S;
-break;
-
-case (0x0040+0x8000):
-temp = EVENT_KEY8L;
-break;
-
-case 0x0800:
-temp = EVENT_KEY9S;
-break;
-
-case (0x0800+0x8000):
-temp = EVENT_KEY9L;
-break;
-
-case 0x0400:
-temp = EVENT_KEY7S;
-break;
-
-case (0x0400+0x8000):
-temp = EVENT_KEY7S;
-break;
-
-case 0x0200:
-temp = EVENT_KEYRIGHTS;
+case 0x0008:
+temp = EVENT_KEYDOWNS;
 break;
 
 case (0x0200+0x8000):
-temp = EVENT_KEYRIGHTL;
+temp = EVENT_KEYDOWNL;
 break;
 
-case 0x0100:
+case 0x0001:
 temp = EVENT_KEYLEFTS;
 break;
 
-case (0x0100+0x8000):
+case (0x0001+0x8000):
 temp = EVENT_KEYLEFTL;
 break;
 
+case 0x0400:
+temp = EVENT_KEYSETUPS;
+break;
+
+case (0x0100+0x8000):
+temp = EVENT_KEYSETUPL;
+break;
+
+case 0x0080:
+temp = EVENT_KEYMINUSS;
+break;
+
+case (0x0400+0x8000):
+temp = EVENT_KEYMINUSL;
+break;
+
+case 0x0010:
+temp = EVENT_KEYRIGHTS;
+break;
+
+case (0x0002+0x8000):
+temp = EVENT_KEYRIGHTL;
+break;
+
+case 0x0040:
+temp = EVENT_NONE;
+break;
+
+case (0x0080+0x8000):
+temp = EVENT_NONE;
+break;
+
+case 0x0002:
+temp = EVENT_KEYENTERS;
+break;
+
+case (0x0008+0x8000):
+temp = EVENT_KEYENTERL;
+break;
+
+case 0x0800:
+temp = EVENT_KEYPLUSS;
+break;
+
+case (0x0800+0x8000):
+temp = EVENT_KEYPLUSL;
+break;
+
+case 0x0100:
+temp = EVENT_NONE;
+break;
+
+case (0x0004+0x8000):
+temp = EVENT_NONE;
+break;
+
+case 0x0020:
+temp = EVENT_NONE;
+break;
+
+case (0x0010+0x8000):
+temp = EVENT_NONE;
+break;
+
+case 0x0004:
+temp = EVENT_NONE;
+break;
+
+case (0x0040+0x8000):
+temp = EVENT_NONE;
+break;
 
 default:
 return;
 }
 
-Key_PutEventToTail(temp);
+
+if(st_Event_EventMage.FiFoHead == (st_Event_EventMage.FiFoTail+1)%8)
+{
+return;
+}
+st_Event_EventMage.EventFiFo[st_Event_EventMage.FiFoTail] = temp;
+st_Event_EventMage.FiFoTail = (++st_Event_EventMage.FiFoTail)%8;
+
 }
 
-# 197
+# 186
 u16 Key_Scan(void)
 {
 u16 State = 0;
+u8 i;
 
-(TRISD0=(1));
-(TRISD1=(1));
-(TRISD2=(1));
-(TRISD3=(1));
-(TRISD4=(0));
-(TRISD5=(0));
-(TRISD6=(0));
+(TRISD0=(0));
+(TRISD1=(0));
+(TRISD2=(0));
+(TRISD3=(0));
+(TRISD4=(1));
+(TRISD5=(1));
+(TRISD6=(1));
 
-(RD4=(0));
-(RD5=(1));
-(RD6=(1));
-
-if((RD0))
+(RD0=(1));
+(RD1=(0));
+(RD2=(0));
+(RD3=(0));
+for(i=0;i<20;i++)
+{}
+if((RD4))
 ((State) |= (0x1<<(0)));
-if((RD1))
+if((RD5))
 ((State) |= (0x1<<(1)));
-if((RD2))
+if((RD6))
 ((State) |= (0x1<<(2)));
-if((RD3))
+
+(RD1=(1));
+(RD0=(0));
+(RD2=(0));
+(RD3=(0));
+for(i=0;i<20;i++)
+{}
+if((RD4))
 ((State) |= (0x1<<(3)));
-
-
-(RD4=(1));
-(RD5=(0));
-(RD6=(1));
-
-if((RD0))
+if((RD5))
 ((State) |= (0x1<<(4)));
-if((RD1))
+if((RD6))
 ((State) |= (0x1<<(5)));
-if((RD2))
+
+(RD2=(1));
+(RD0=(0));
+(RD1=(0));
+(RD3=(0));
+for(i=0;i<20;i++)
+{}
+if((RD4))
 ((State) |= (0x1<<(6)));
-if((RD3))
+if((RD5))
 ((State) |= (0x1<<(7)));
-
-(RD4=(1));
-(RD5=(1));
-(RD6=(0));
-
-if((RD0))
+if((RD6))
 ((State) |= (0x1<<(8)));
-if((RD1))
+
+(RD3=(1));
+(RD0=(0));
+(RD1=(0));
+(RD2=(0));
+for(i=0;i<20;i++)
+{}
+if((RD4))
 ((State) |= (0x1<<(9)));
-if((RD2))
+if((RD5))
 ((State) |= (0x1<<(10)));
-if((RD3))
+if((RD6))
 ((State) |= (0x1<<(11)));
+
+(RD0=(0));
+(RD1=(0));
+(RD2=(0));
+(RD3=(0));
 
 return State;
 }
 
-# 259
-void Key_Debounce(u16 KeyState)
+# 266
+u16 Key_Debounce(u16 KeyState)
 {
 u16 TrigKey = 0x0000;
 static u16 KeyStateBuf = 0x0000;
@@ -2542,10 +2552,12 @@ if(KeyState != KeyStateBuf)
 {
 KeyStateBuf = KeyState;
 ShortDebounce = 0;
+return 0;
 }
-else if(ShortDebounce < 8)
+else if(ShortDebounce < 5)
 {
 ShortDebounce++;
+return 0;
 }
 else
 {
@@ -2555,25 +2567,8 @@ TrigKey = KeyState&(KeyState^ContKey);
 ContKey = KeyState;
 
 
-Key_PutEvent(TrigKey);
+return TrigKey;
 
-if(ContKey != ContKeyBuf)
-{
-ContKeyBuf = ContKey;
-LongDebounce = 0;
-}
-else if(LongDebounce < 300)
-{
-LongDebounce++;
-}
-else
-{
-
-
-
-LongDebounce = 0;
-((ContKey) |= (0x1<<(7)));
-Key_PutEvent(ContKey);
-}
+# 318
 }
 }

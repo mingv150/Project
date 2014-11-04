@@ -2,7 +2,7 @@
 Copyright (C), 2014, Mingv150, All rights reserved
 FileName: /Driver/BSP/BspSystem.h
 Description:  
-Author:  
+Author:  mingv150@163.com
 Version:  
 Changelog: 
 *****************************************************************************/

@@ -1,8 +1,7 @@
-Code/Driver/BSP/../Key/Key.h
 Code/Driver/BSP/../../oopc.h
 c:\Program Files\HI-TECH Software\PICC\9.83\include\htc.h
-Code/Driver/BSP/BspSystem.h
 c:\Program Files\HI-TECH Software\PICC\9.83\include\eeprom_routines.h
+Code/Driver/BSP/BspEeprom.h
 c:\Program Files\HI-TECH Software\PICC\9.83\include\chip_select.h
 Code/Driver/BSP/../../Model.h
 c:\Program Files\HI-TECH Software\PICC\9.83\include\pic.h

@@ -1,10 +1,10 @@
 Code/Driver/LCD/../../Common.h
-D:\Program Files (x86)\HI-TECH Software\PICC\9.83\include\htc.h
-D:\Program Files (x86)\HI-TECH Software\PICC\9.83\include\eeprom_routines.h
-D:\Program Files (x86)\HI-TECH Software\PICC\9.83\include\chip_select.h
-D:\Program Files (x86)\HI-TECH Software\PICC\9.83\include\pic.h
+c:\Program Files\HI-TECH Software\PICC\9.83\include\htc.h
+c:\Program Files\HI-TECH Software\PICC\9.83\include\eeprom_routines.h
+c:\Program Files\HI-TECH Software\PICC\9.83\include\chip_select.h
+c:\Program Files\HI-TECH Software\PICC\9.83\include\pic.h
 Code/Driver/LCD/../../Model.h
 Code/Driver/LCD/Lcd.h
-D:\Program Files (x86)\HI-TECH Software\PICC\9.83\include\pic16f914.h
+c:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f914.h
 Code/Driver/LCD/../../oopc.h
 Code/Driver/LCD/../BSP/BspGpio.h

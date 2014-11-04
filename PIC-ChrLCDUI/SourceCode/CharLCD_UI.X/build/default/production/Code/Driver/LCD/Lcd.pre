@@ -1,7 +1,7 @@
 
 # 1 "Code/Driver/LCD/Lcd.c"
 
-# 95 "D:\Program Files (x86)\HI-TECH Software\PICC\9.83\include\pic16f914.h"
+# 95 "c:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f914.h"
 volatile unsigned char INDF @ 0x000;
 
 
@@ -2262,21 +2262,21 @@ unsigned EEWR : 1;
 volatile unsigned char EECON2 @ 0x18D;
 
 
-# 27 "D:\Program Files (x86)\HI-TECH Software\PICC\9.83\include\pic.h"
+# 27 "c:\Program Files\HI-TECH Software\PICC\9.83\include\pic.h"
 #pragma inline(_nop)
 extern void _nop(void);
 
 # 80
 extern unsigned int flash_read(unsigned short addr);
 
-# 41 "D:\Program Files (x86)\HI-TECH Software\PICC\9.83\include\eeprom_routines.h"
+# 41 "c:\Program Files\HI-TECH Software\PICC\9.83\include\eeprom_routines.h"
 extern unsigned char eeprom_write(unsigned char addr, unsigned char value);
 extern unsigned char eeprom_read(unsigned char addr);
 extern void eecpymem(volatile unsigned char *to, eeprom unsigned char *from, unsigned char size);
 extern void memcpyee(eeprom unsigned char *to, const unsigned char *from, unsigned char size);
 
 
-# 153 "D:\Program Files (x86)\HI-TECH Software\PICC\9.83\include\pic.h"
+# 153 "c:\Program Files\HI-TECH Software\PICC\9.83\include\pic.h"
 #pragma inline(_delay)
 extern void _delay(unsigned long);
 
@@ -2291,14 +2291,11 @@ typedef signed short long int s24;
 typedef unsigned long int u32;
 typedef signed long int s32;
 
-# 67 "Code/Driver/LCD/../BSP/BspGpio.h"
+# 81 "Code/Driver/LCD/../BSP/BspGpio.h"
 void BspGpio_Buzzer(void);
 
-# 28 "Code/Driver/LCD/Lcd.c"
-static u8 Lcd_Purpose;
-
-# 38
-static void Lcd_Delay(u16 t)
+# 37 "Code/Driver/LCD/Lcd.c"
+void Lcd_Delay(u16 t)
 {
 u8 i;
 while(t--)
@@ -2307,31 +2304,8 @@ for(i=0;i<125;i++);
 }
 }
 
-# 176
-const u8 addr_tab[]=
-{
-0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,
-0x90,0x91,0x92,0x93,0x94,0x95,0x96,0x97,
-0x88,0x89,0x8a,0x8b,0x8c,0x8d,0x8e,0x8f,
-0x98,0x99,0x9a,0x9b,0x9c,0x9d,0x9e,0x9f,
-
-};
-
-
-
-void delayms(u16 t)
-{
-u8 i;
-while(t--)
-{
-for(i=0;i<125;i++);
-}
-}
-
-
-
-
-void SendByte(u8 Dbyte)
+# 54
+static void SendByte(u8 Dbyte)
 {
 u8 i;
 u8 temp;
@@ -2348,13 +2322,10 @@ temp = (Dbyte&0x80) ? 1 : 0 ;
 (RE0=(0));
 Dbyte=Dbyte<<1;
 }
-
 }
 
-
-
-
-u8 ReceiveByte(void)
+# 81
+static u8 ReceiveByte(void)
 {
 u8 i,temp1,temp2;
 temp1 = 0;
@@ -2388,66 +2359,73 @@ if((RE1)) temp2++;
 return ((0xf0&temp1)+(0x0f&(temp2>>4));
 }
 
-# 260
-void CheckBusy(void)
+# 123
+static void Lcd_CheckBusy(void)
 {
 do SendByte(0xfc);
 while(0x80&ReceiveByte());
 }
 
-
-u8 Lcd_ReadData(void)
+# 137
+static u8 Lcd_ReadData(void)
 {
 u8 dat;
 SendByte(0xfe);
 dat = ReceiveByte();
 
 return dat;
-
 }
 
-void Lcd_WriteCmd(u8 Cbyte )
+# 154
+static void Lcd_WriteCmd(u8 Cbyte )
 {
-
 (TRISE2=(0));
 (RE2=(1));
-CheckBusy();
+Lcd_CheckBusy();
 SendByte(0xf8);
 SendByte(0xf0&Cbyte);
 SendByte(0xf0&Cbyte<<4);
 (RE2=(0));
 }
 
-void Lcd_WriteData(u8 Dbyte )
+# 173
+static void Lcd_WriteData(u8 Dbyte )
 {
 (TRISE2=(0));
 (RE2=(1));
-CheckBusy();
+Lcd_CheckBusy();
 SendByte(0xfa);
 SendByte(0xf0&Dbyte);
 SendByte(0xf0&Dbyte<<4);
 (RE2=(0));
 }
 
+# 192
 void Lcd_Init(void)
 {
-
 ANSEL = 0x00;
-delayms(10);
+Lcd_Delay(10);
 Lcd_WriteCmd(0x30);
-delayms(1);
+Lcd_Delay(1);
 Lcd_WriteCmd(0x30);
-delayms(1);
+Lcd_Delay(1);
 Lcd_WriteCmd(0x0c);
-delayms(1);
+Lcd_Delay(1);
 Lcd_WriteCmd(0x01);
-delayms(10);
+Lcd_Delay(10);
 }
 
-void hanzi_Disp(u8 x,u8 y,const u8 *s)
+# 214
+void Lcd_StrDisp(u8 x,u8 y,const u8 *s)
 {
+const u8 addr_tab[]=
+{
+0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,
+0x90,0x91,0x92,0x93,0x94,0x95,0x96,0x97,
+0x88,0x89,0x8a,0x8b,0x8c,0x8d,0x8e,0x8f,
+0x98,0x99,0x9a,0x9b,0x9c,0x9d,0x9e,0x9f,
+};
 Lcd_WriteCmd(addr_tab[8*x+y]);
-
 while(*s>0)
 {
 Lcd_WriteData(*s);
@@ -2455,70 +2433,8 @@ s++;
 }
 }
 
-
-void hanzi_Cur(u8 x,u8 y)
+# 239
+void Lcd_ClrScreen(void)
 {
-Lcd_WriteCmd(addr_tab[8*x+y]);
-
+Lcd_WriteCmd(0x01);
 }
-
-
-
-void GUI_Point(unsigned char y,unsigned char x,unsigned colour)
-{
-unsigned char GDRAM_hbit,GDRAM_lbit;
-unsigned char x_Dyte,x_byte;
-unsigned char y_Dyte,y_byte;
-x--;y--;
-
-x_Dyte=y/16;
-x_byte=y&0x0f;
-y_Dyte=x/32;
-y_byte=x&0x1f;
-
-
-Lcd_WriteCmd(0x34);
-Lcd_WriteCmd(0x36);
-Lcd_WriteCmd(0x80+y_byte);
-Lcd_WriteCmd(0x80+x_Dyte+8*y_Dyte);
-
-
-GDRAM_hbit=Lcd_ReadData();
-GDRAM_lbit=Lcd_ReadData();
-
-
-if(colour==1)
-{
-Lcd_WriteCmd(0x80+y_byte);
-Lcd_WriteCmd(0x80+x_Dyte+8*y_Dyte);
-
-if(x_byte<8)
-{
-Lcd_WriteData(GDRAM_hbit|(0X01<<(7-x_byte)));
-Lcd_WriteData(GDRAM_lbit);
-}
-else
-{
-Lcd_WriteData(GDRAM_hbit);
-Lcd_WriteData(GDRAM_lbit|(0x01<<(15-x_byte)));
-}
-}
-else
-{
-Lcd_WriteCmd(0x80+y_byte);
-Lcd_WriteCmd(0x80+x_Dyte+8*y_Dyte);
-
-if(x_byte<8)
-{
-Lcd_WriteData(GDRAM_hbit & ~(0X01<<(7-x_byte)));
-Lcd_WriteData(GDRAM_lbit);
-}
-else
-{
-Lcd_WriteData(GDRAM_hbit);
-Lcd_WriteData(GDRAM_lbit & ~(0x01<<(15-x_byte)));
-}
-}
-
-}
-

@@ -1877,45 +1877,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _EECON1bits `VS193  1 e@396 ]
 "2475 c:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f914.h
 [v _EECON2 `Vuc  1 e@397 ]
-"33 Code/TestMain.c
-[v _PaperNum `uc  1 e ]
-[s S196 `us 1 `uc 1 `uc 1 `uc 1 `uc 1 ]
-[n S196 . PaperNum ShuaJiao ShuaLiao Startup Back ]
-"34 Code/TestMain.c
-[v _SetupParam `S196  1 e ]
-"30 Code/./Driver/LCD/LcdMenu.h
-[v F2529 `uc  -> 10 `i t ]
-[s S197 `F2529 -> 3 `i ]
-[n S197 . num ]
-"35 Code/TestMain.c
-[v _FactoryParam `S197  1 e ]
-"36 Code/TestMain.c
-[v _u8_Timer_Flash `uc  1 e ]
-[p mainexit ]
-[c E2569 0 1 2 3 .. ]
-[n E2569 . TestMain_NORMALMOD TestMain_SETUPMOD TestMain_FACTORYMOD TestMain_MAXMOD  ]
-"37 Code/./Driver/LCD/Lcd.h
-[v _Lcd_Init `(v  0 ef ]
-"27 Code/./Driver/BSP/BspSystem.h
-[v _BspSystem_TmrInit `(v  0 ef ]
-"48 Code/./Driver/LCD/LcdMenu.h
-[v _LcdMenu_Welcome `(v  0 ef ]
-"36 Code/./Driver/LCD/Lcd.h
-[v _Lcd_Delay `(v  0 ef1`us ]
-"28 Code/./Driver/BSP/BspEeprom.h
-[v _BspEeprom_GetParam `(v  0 ef3`uc`*uc`uc ]
-"39 Code/./Driver/LCD/Lcd.h
-[v _Lcd_ClrScreen `(v  0 ef ]
-"95 Code/./Driver/Key/Key.h
-[v _Key_GetEvent `(uc  0 ef ]
-[c E2542 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 .. ]
-[n E2542 event EVENT_NONE EVENT_KEYUPS EVENT_KEYUPL EVENT_KEYDOWNS EVENT_KEYDOWNL EVENT_KEYLEFTS EVENT_KEYLEFTL EVENT_KEYRIGHTS EVENT_KEYRIGHTL EVENT_KEYPLUSS EVENT_KEYPLUSL EVENT_KEYMINUSS EVENT_KEYMINUSL EVENT_KEYSETUPS EVENT_KEYSETUPL EVENT_KEYENTERS EVENT_KEYENTERL EVENT_MAX  ]
-"47 Code/./Driver/LCD/LcdMenu.h
-[v _LcdMenu_Normal `(v  0 ef2`uc`us ]
-"46 Code/./Driver/LCD/LcdMenu.h
-[v _LcdMenu_Setup `(v  0 ef2`uc`*S196 ]
-"45 Code/./Driver/LCD/LcdMenu.h
-[v _LcdMenu_Factory `(v  0 ef2`uc`*S197 ]
+"27 Code/Driver/BSP/BspEeprom.c
+[v _BspEeprom_Purpose `uc  1 s ]
 [; ;pic16f914.h: 95: volatile unsigned char INDF @ 0x000;
 [; ;pic16f914.h: 99: volatile unsigned char TMR0 @ 0x001;
 [; ;pic16f914.h: 103: volatile unsigned char PCL @ 0x002;
@@ -3807,186 +3770,270 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Common.h: 31: typedef signed short long int s24;
 [; ;Common.h: 32: typedef unsigned long int u32;
 [; ;Common.h: 33: typedef signed long int s32;
-[; ;BspSystem.h: 27: void BspSystem_TmrInit(void);
-[; ;BspGpio.h: 81: void BspGpio_Buzzer(void);
-[; ;BspEeprom.h: 27: void BspEeprom_SaveParam(u8 StartAddr,const u8 *pSrc,u8 Size);
-[; ;BspEeprom.h: 28: void BspEeprom_GetParam(u8 StartAddr,u8 *pDes,u8 Size);
-[; ;Lcd.h: 36: void Lcd_Delay(u16 t);
-[; ;Lcd.h: 37: void Lcd_Init(void);
-[; ;Lcd.h: 38: void Lcd_StrDisp(u8 x,u8 y,const u8 *s);
-[; ;Lcd.h: 39: void Lcd_ClrScreen(void);
-[; ;LcdMenu.h: 19: typedef struct
-[; ;LcdMenu.h: 20: {
-[; ;LcdMenu.h: 21: u16 PaperNum;
-[; ;LcdMenu.h: 22: u8 ShuaJiao;
-[; ;LcdMenu.h: 23: u8 ShuaLiao;
-[; ;LcdMenu.h: 24: u8 Startup;
-[; ;LcdMenu.h: 25: u8 Back;
-[; ;LcdMenu.h: 26: }t_SetupParam;
-[; ;LcdMenu.h: 28: typedef struct
-[; ;LcdMenu.h: 29: {
-[; ;LcdMenu.h: 30: u8 num[3][10];
-[; ;LcdMenu.h: 31: }t_FactoryParam;
-[; ;LcdMenu.h: 45: void LcdMenu_Factory(u8 KeyEvent,t_FactoryParam *pParam);
-[; ;LcdMenu.h: 46: void LcdMenu_Setup(u8 KeyEvent,t_SetupParam *pParam);
-[; ;LcdMenu.h: 47: void LcdMenu_Normal(u8 KeyEvent,u16 PaperNum);
-[; ;LcdMenu.h: 48: void LcdMenu_Welcome(void);
-[; ;Key.h: 15: enum event
-[; ;Key.h: 16: {
-[; ;Key.h: 17: EVENT_NONE = 0,
-[; ;Key.h: 18: EVENT_KEYUPS,
-[; ;Key.h: 19: EVENT_KEYUPL,
-[; ;Key.h: 20: EVENT_KEYDOWNS,
-[; ;Key.h: 21: EVENT_KEYDOWNL,
-[; ;Key.h: 22: EVENT_KEYLEFTS,
-[; ;Key.h: 23: EVENT_KEYLEFTL,
-[; ;Key.h: 24: EVENT_KEYRIGHTS,
-[; ;Key.h: 25: EVENT_KEYRIGHTL,
-[; ;Key.h: 26: EVENT_KEYPLUSS,
-[; ;Key.h: 27: EVENT_KEYPLUSL,
-[; ;Key.h: 28: EVENT_KEYMINUSS,
-[; ;Key.h: 29: EVENT_KEYMINUSL,
-[; ;Key.h: 30: EVENT_KEYSETUPS,
-[; ;Key.h: 31: EVENT_KEYSETUPL,
-[; ;Key.h: 32: EVENT_KEYENTERS,
-[; ;Key.h: 33: EVENT_KEYENTERL,
-[; ;Key.h: 34: EVENT_MAX
-[; ;Key.h: 35: };
-[; ;Key.h: 92: u16 Key_Scan(void);
-[; ;Key.h: 93: u16 Key_Debounce(u16 KeyState);
-[; ;Key.h: 94: void Key_PutEvent(u16 KeyValue);
-[; ;Key.h: 95: u8 Key_GetEvent(void);
-[; ;TestMain.h: 17: typedef enum
-[; ;TestMain.h: 18: {
-[; ;TestMain.h: 19: TestMain_NORMALMOD = 0,
-[; ;TestMain.h: 20: TestMain_SETUPMOD,
-[; ;TestMain.h: 21: TestMain_FACTORYMOD,
-[; ;TestMain.h: 22: TestMain_MAXMOD
-[; ;TestMain.h: 23: }t_Sysmod;
-[; ;TestMain.c: 33: u8 PaperNum;
-[; ;TestMain.c: 34: t_SetupParam SetupParam;
-[; ;TestMain.c: 35: t_FactoryParam FactoryParam;
-"36 Code/TestMain.c
-[i _u8_Timer_Flash
--> -> 0 `i `uc
-]
-[; ;TestMain.c: 36: u8 u8_Timer_Flash = 0;
-"46
-[v _main `(v  1 ef ]
+[; ;BspEeprom.c: 27: static u8 BspEeprom_Purpose;
+"37 Code/Driver/BSP/BspEeprom.c
+[v _BspEeprom_SaveParam `(v  1 ef3`uc`*Cuc`uc ]
 {
-[; ;TestMain.c: 45: void main(void)
-[; ;TestMain.c: 46: {
-[e :U _main ]
+[; ;BspEeprom.c: 36: void BspEeprom_SaveParam(u8 StartAddr,const u8 *pSrc,u8 Size)
+[; ;BspEeprom.c: 37: {
+[e :U _BspEeprom_SaveParam ]
+[v _StartAddr `uc  1 r1 ]
+[v _pSrc `*Cuc  1 r2 ]
+[v _Size `uc  1 r3 ]
 [f ]
-"48
-[v _SystemMode `E2569  1 a ]
-[; ;TestMain.c: 48: t_Sysmod SystemMode = TestMain_NORMALMOD;
-[e = _SystemMode . `E2569 0 ]
-"49
-[v _Key `uc  1 a ]
-[; ;TestMain.c: 49: u8 Key;
-[; ;TestMain.c: 51: Lcd_Init();
-"51
-[e ( _Lcd_Init ..  ]
-[; ;TestMain.c: 53: BspSystem_TmrInit();
-"53
-[e ( _BspSystem_TmrInit ..  ]
-[; ;TestMain.c: 54: LcdMenu_Welcome();
-"54
-[e ( _LcdMenu_Welcome ..  ]
-[; ;TestMain.c: 55: Lcd_Delay(10000);
-"55
-[e ( _Lcd_Delay (1 -> -> 10000 `i `us ]
-[; ;TestMain.c: 57: BspEeprom_GetParam(0,&SetupParam,sizeof(t_SetupParam));
-"57
-[e ( _BspEeprom_GetParam (3 , , -> -> 0 `i `uc -> &U _SetupParam `*uc -> -> # `S196 `ui `uc ]
-[; ;TestMain.c: 58: BspEeprom_GetParam(20,&FactoryParam,sizeof(t_FactoryParam));
-"58
-[e ( _BspEeprom_GetParam (3 , , -> -> 20 `i `uc -> &U _FactoryParam `*uc -> -> # `S197 `ui `uc ]
-[; ;TestMain.c: 60: Lcd_ClrScreen();
-"60
-[e ( _Lcd_ClrScreen ..  ]
-[; ;TestMain.c: 62: while(1)
-"62
-[e :U 200 ]
-[; ;TestMain.c: 63: {
-"63
+"38
+[v _i `uc  1 a ]
+"39
+[v _GIETemp `uc  1 a ]
+[; ;BspEeprom.c: 38: u8 i;
+[; ;BspEeprom.c: 39: u8 GIETemp = 0;
+[e = _GIETemp -> -> 0 `i `uc ]
+"40
+[v _ReadTemp `uc  1 a ]
+[; ;BspEeprom.c: 40: u8 ReadTemp = 0;
+[e = _ReadTemp -> -> 0 `i `uc ]
+[; ;BspEeprom.c: 42: for(i=0;i<Size;i++)
+"42
 {
-[; ;TestMain.c: 66: Key = Key_GetEvent();
-"66
-[e = _Key ( _Key_GetEvent ..  ]
-[; ;TestMain.c: 68: if(Key == EVENT_KEYSETUPS)
-"68
-[e $ ! == -> _Key `i -> . `E2542 13 `i 202  ]
-[; ;TestMain.c: 69: {
-"69
-{
-[; ;TestMain.c: 70: SystemMode++;
-"70
-[e ++ _SystemMode -> -> 1 `i `E2569 ]
-[; ;TestMain.c: 71: SystemMode = (SystemMode >= TestMain_MAXMOD) ? TestMain_NORMALMOD : SystemMode;
-"71
-[e = _SystemMode -> ? >= -> _SystemMode `i -> . `E2569 3 `i : -> . `E2569 0 `i -> _SystemMode `i `E2569 ]
-[; ;TestMain.c: 72: Lcd_ClrScreen();
-"72
-[e ( _Lcd_ClrScreen ..  ]
-"73
-}
-[e :U 202 ]
-[; ;TestMain.c: 73: }
-[; ;TestMain.c: 75: switch(SystemMode)
-"75
-[e $U 204  ]
-[; ;TestMain.c: 76: {
-"76
-{
-[; ;TestMain.c: 77: case TestMain_NORMALMOD:
-"77
-[e :U 205 ]
-[; ;TestMain.c: 78: LcdMenu_Normal(Key,PaperNum);
-"78
-[e ( _LcdMenu_Normal (2 , _Key -> _PaperNum `us ]
-[; ;TestMain.c: 79: break;
-"79
-[e $U 203  ]
-[; ;TestMain.c: 81: case TestMain_SETUPMOD:
-"81
-[e :U 206 ]
-[; ;TestMain.c: 82: LcdMenu_Setup(Key,&SetupParam);
-"82
-[e ( _LcdMenu_Setup (2 , _Key &U _SetupParam ]
-[; ;TestMain.c: 83: break;
-"83
-[e $U 203  ]
-[; ;TestMain.c: 85: case TestMain_FACTORYMOD:
-"85
-[e :U 207 ]
-[; ;TestMain.c: 86: LcdMenu_Factory(Key,&FactoryParam);
-"86
-[e ( _LcdMenu_Factory (2 , _Key &U _FactoryParam ]
-[; ;TestMain.c: 87: break;
-"87
-[e $U 203  ]
-"88
-}
-[; ;TestMain.c: 88: }
-[e $U 203  ]
-"75
-[e :U 204 ]
-[e [\ _SystemMode , $ . `E2569 0 205
- , $ . `E2569 1 206
- , $ . `E2569 2 207
- 203 ]
-"88
-[e :U 203 ]
-"92
-}
-[e :U 199 ]
-"62
+[e = _i -> -> 0 `i `uc ]
 [e $U 200  ]
-[e :U 201 ]
-[; ;TestMain.c: 92: }
-[; ;TestMain.c: 94: }
+"43
+[e :U 197 ]
+[; ;BspEeprom.c: 43: {
+{
+[; ;BspEeprom.c: 44: do
+"44
+[e :U 203 ]
+[; ;BspEeprom.c: 45: {
+"45
+{
+[; ;BspEeprom.c: 46: do{;}
+"46
+[e :U 206 ]
+{
+}
+[; ;BspEeprom.c: 47: while(WR == 1);
+"47
+[e $ == -> _WR `i -> 1 `i 206  ]
+[e :U 205 ]
+[; ;BspEeprom.c: 48: EEADR = (StartAddr+i);
+"48
+[e = _EEADR -> + -> _StartAddr `i -> _i `i `uc ]
+[; ;BspEeprom.c: 49: EEDATL = *(pSrc+i);
+"49
+[e = _EEDATL *U + _pSrc * -> _i `ux -> -> # *U _pSrc `ui `ux ]
+[; ;BspEeprom.c: 50: GIETemp = 0;
+"50
+[e = _GIETemp -> -> 0 `i `uc ]
+[; ;BspEeprom.c: 51: if(GIE)
+"51
+[e $ ! _GIE 207  ]
+[; ;BspEeprom.c: 52: GIETemp = 1;
+"52
+[e = _GIETemp -> -> 1 `i `uc ]
+[e :U 207 ]
+[; ;BspEeprom.c: 53: GIE = 0;
+"53
+[e = _GIE -> -> 0 `i `b ]
+[; ;BspEeprom.c: 54: EEPGD = 0;
+"54
+[e = _EEPGD -> -> 0 `i `b ]
+[; ;BspEeprom.c: 55: WREN = 1;
+"55
+[e = _WREN -> -> 1 `i `b ]
+[; ;BspEeprom.c: 56: EECON2 = 0x55;
+"56
+[e = _EECON2 -> -> 85 `i `uc ]
+[; ;BspEeprom.c: 57: EECON2 = 0xAA;
+"57
+[e = _EECON2 -> -> 170 `i `uc ]
+[; ;BspEeprom.c: 58: WR = 1;
+"58
+[e = _WR -> -> 1 `i `b ]
+[; ;BspEeprom.c: 59: do{;}
+"59
+[e :U 210 ]
+{
+}
+[; ;BspEeprom.c: 60: while(WR == 1);
+"60
+[e $ == -> _WR `i -> 1 `i 210  ]
+[e :U 209 ]
+[; ;BspEeprom.c: 61: WREN = 0;
+"61
+[e = _WREN -> -> 0 `i `b ]
+[; ;BspEeprom.c: 62: EEIF = 0;
+"62
+[e = _EEIF -> -> 0 `i `b ]
+[; ;BspEeprom.c: 64: do{;}
+"64
+[e :U 213 ]
+{
+}
+[; ;BspEeprom.c: 65: while(RD == 1);
+"65
+[e $ == -> _RD `i -> 1 `i 213  ]
+[e :U 212 ]
+[; ;BspEeprom.c: 66: EEADR = (StartAddr+i);
+"66
+[e = _EEADR -> + -> _StartAddr `i -> _i `i `uc ]
+[; ;BspEeprom.c: 67: EEPGD = 0;
+"67
+[e = _EEPGD -> -> 0 `i `b ]
+[; ;BspEeprom.c: 68: RD = 1;
+"68
+[e = _RD -> -> 1 `i `b ]
+[; ;BspEeprom.c: 69: do{;}
+"69
+[e :U 216 ]
+{
+}
+[; ;BspEeprom.c: 70: while(RD == 1);
+"70
+[e $ == -> _RD `i -> 1 `i 216  ]
+[e :U 215 ]
+[; ;BspEeprom.c: 71: ReadTemp = EEDATL;
+"71
+[e = _ReadTemp _EEDATL ]
+[; ;BspEeprom.c: 72: if(GIETemp)
+"72
+[e $ ! != -> _GIETemp `i -> -> -> 0 `i `uc `i 217  ]
+[; ;BspEeprom.c: 73: GIE = 1;
+"73
+[e = _GIE -> -> 1 `i `b ]
+[e :U 217 ]
+"74
+}
+[; ;BspEeprom.c: 74: }while(ReadTemp != *(pSrc+i));
+[e $ != -> _ReadTemp `i -> *U + _pSrc * -> _i `ux -> -> # *U _pSrc `ui `ux `i 203  ]
+[e :U 202 ]
+"75
+}
+"42
+[e ++ _i -> -> 1 `i `uc ]
+[e :U 200 ]
+[e $ < -> _i `i -> _Size `i 197  ]
+[e :U 198 ]
+"75
+}
+[; ;BspEeprom.c: 75: }
+[; ;BspEeprom.c: 76: }
+"76
+[e :UE 196 ]
+}
+"87
+[v _BspEeprom_GetParam `(v  1 ef3`uc`*uc`uc ]
+{
+[; ;BspEeprom.c: 86: void BspEeprom_GetParam(u8 StartAddr,u8 *pDes,u8 Size)
+[; ;BspEeprom.c: 87: {
+[e :U _BspEeprom_GetParam ]
+[v _StartAddr `uc  1 r1 ]
+[v _pDes `*uc  1 r2 ]
+[v _Size `uc  1 r3 ]
+[f ]
+"88
+[v _i `uc  1 a ]
+"89
+[v _temp1 `uc  1 a ]
+"90
+[v _temp2 `uc  1 a ]
+[; ;BspEeprom.c: 88: u8 i;
+[; ;BspEeprom.c: 89: u8 temp1;
+[; ;BspEeprom.c: 90: u8 temp2;
+[; ;BspEeprom.c: 92: for(i=0;i<Size;i++)
+"92
+{
+[e = _i -> -> 0 `i `uc ]
+[e $U 222  ]
+"93
+[e :U 219 ]
+[; ;BspEeprom.c: 93: {
+{
+[; ;BspEeprom.c: 94: do
 "94
-[e :UE 198 ]
+[e :U 225 ]
+[; ;BspEeprom.c: 95: {
+"95
+{
+[; ;BspEeprom.c: 96: do{;}
+"96
+[e :U 228 ]
+{
+}
+[; ;BspEeprom.c: 97: while(RD==1);
+"97
+[e $ == -> _RD `i -> 1 `i 228  ]
+[e :U 227 ]
+[; ;BspEeprom.c: 98: EEADR=(StartAddr+i);
+"98
+[e = _EEADR -> + -> _StartAddr `i -> _i `i `uc ]
+[; ;BspEeprom.c: 99: EEPGD=0;
+"99
+[e = _EEPGD -> -> 0 `i `b ]
+[; ;BspEeprom.c: 100: RD=1;
+"100
+[e = _RD -> -> 1 `i `b ]
+[; ;BspEeprom.c: 101: do{;}
+"101
+[e :U 231 ]
+{
+}
+[; ;BspEeprom.c: 102: while(RD==1);
+"102
+[e $ == -> _RD `i -> 1 `i 231  ]
+[e :U 230 ]
+[; ;BspEeprom.c: 103: temp1 = EEDATL;
+"103
+[e = _temp1 _EEDATL ]
+[; ;BspEeprom.c: 105: do{;}
+"105
+[e :U 234 ]
+{
+}
+[; ;BspEeprom.c: 106: while(RD==1);
+"106
+[e $ == -> _RD `i -> 1 `i 234  ]
+[e :U 233 ]
+[; ;BspEeprom.c: 107: EEADR=(StartAddr+i);
+"107
+[e = _EEADR -> + -> _StartAddr `i -> _i `i `uc ]
+[; ;BspEeprom.c: 108: EEPGD=0;
+"108
+[e = _EEPGD -> -> 0 `i `b ]
+[; ;BspEeprom.c: 109: RD=1;
+"109
+[e = _RD -> -> 1 `i `b ]
+[; ;BspEeprom.c: 110: do{;}
+"110
+[e :U 237 ]
+{
+}
+[; ;BspEeprom.c: 111: while(RD==1);
+"111
+[e $ == -> _RD `i -> 1 `i 237  ]
+[e :U 236 ]
+[; ;BspEeprom.c: 112: temp2 = EEDATL;
+"112
+[e = _temp2 _EEDATL ]
+"113
+}
+[; ;BspEeprom.c: 113: }while(temp1^temp2);
+[e $ != ^ -> _temp1 `i -> _temp2 `i -> 0 `i 225  ]
+[e :U 224 ]
+[; ;BspEeprom.c: 115: *(pDes+i) = temp2;
+"115
+[e = *U + _pDes * -> _i `ux -> -> # *U _pDes `ui `ux _temp2 ]
+"116
+}
+"92
+[e ++ _i -> -> 1 `i `uc ]
+[e :U 222 ]
+[e $ < -> _i `i -> _Size `i 219  ]
+[e :U 220 ]
+"116
+}
+[; ;BspEeprom.c: 116: }
+[; ;BspEeprom.c: 117: }
+"117
+[e :UE 218 ]
 }

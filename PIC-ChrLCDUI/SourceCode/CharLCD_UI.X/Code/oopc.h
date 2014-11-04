@@ -2,7 +2,7 @@
 *Copyright(C),2012-2013,mingv150,All rights reserved
 *FileName:
 *Description:
-*Author:
+*Author: mingv150@163.com
 *Version:
 *Date:
 *******************************************************************************/

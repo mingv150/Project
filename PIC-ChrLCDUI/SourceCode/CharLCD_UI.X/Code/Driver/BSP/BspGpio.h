@@ -2,7 +2,7 @@
 Copyright (C), 2014, Mingv150, All rights reserved
 FileName: /Driver/BSP/BspGpio.h
 Description:  
-Author:  
+Author:  mingv150@163.com
 Version:  
 Changelog: 
 *****************************************************************************/
@@ -17,6 +17,7 @@ Changelog:
 #define BspGpio_INPUT 1
 #define BspGpio_LOW 0
 #define BspGpio_HIGH 1
+
 #define BspGpio_PORTAC(x) (TRISA = (x))
 #define BspGpio_PORTAD(x) (PORTA = (x))
 #define BspGpio_PORTBC(x) (TRISB = (x))
@@ -39,18 +40,31 @@ Changelog:
 
 #define BspGpio_KEY1C(x) (TRISD0=(x))
 #define BspGpio_KEY1IN() (RD0)
+#define BspGpio_KEY1OUT(x) (RD0=(x))
+
 #define BspGpio_KEY2C(x) (TRISD1=(x))
 #define BspGpio_KEY2IN() (RD1)
+#define BspGpio_KEY2OUT(x) (RD1=(x))
+
 #define BspGpio_KEY3C(x) (TRISD2=(x))
 #define BspGpio_KEY3IN() (RD2)
+#define BspGpio_KEY3OUT(x) (RD2=(x))
+
 #define BspGpio_KEY4C(x) (TRISD3=(x))
 #define BspGpio_KEY4IN() (RD3)
+#define BspGpio_KEY4OUT(x) (RD3=(x))
+
 #define BspGpio_KEY5C(x) (TRISD4=(x))
+#define BspGpio_KEY5IN() (RD4)
 #define BspGpio_KEY5OUT(x) (RD4=(x))
+
 #define BspGpio_KEY6C(x) (TRISD5=(x))
 #define BspGpio_KEY6OUT(x) (RD5=(x))
+#define BspGpio_KEY6IN() (RD5)
+
 #define BspGpio_KEY7C(x) (TRISD6=(x))
 #define BspGpio_KEY7OUT(x) (RD6=(x))
+#define BspGpio_KEY7IN() (RD6)
 
 
 /*Data Type Specification*/

@@ -2,7 +2,7 @@
 Copyright (C), 2014, Mingv150, All rights reserved
 FileName: Key.c
 Description:  
-Author:  
+Author:  mingv150@163.com
 Version:  
 Changelog: 
 *****************************************************************************/
@@ -28,27 +28,10 @@ Global Data Structure:
 *****************************************************************************/
 static t_EventMage st_Event_EventMage = 
 {
-    {0,0,0,0},
+    {0,0,0,0,0,0},
     0,
     0
 };
-
-
-/****************************************************************************
-Function: Name
-Description:
-Input:
-Output:
-*****************************************************************************/
-void Key_PutEventToTail(u8 key)
-{
-    if(st_Event_EventMage.FiFoHead == (st_Event_EventMage.FiFoTail+1)%EVENT_FIFOLEN)
-    {
-        return;
-    }
-    st_Event_EventMage.EventFiFo[st_Event_EventMage.FiFoTail] = key;
-    st_Event_EventMage.FiFoTail = (++st_Event_EventMage.FiFoTail)%EVENT_FIFOLEN;
-}
 
 
 /*******************************************************************************
@@ -84,35 +67,35 @@ void Key_PutEvent(u16 KeyValue)
     switch(KeyValue)
     {
         case KEY1SHORT:
-            temp = EVENT_KEY7S;
+            temp = EVENT_KEYUPS;
             break;
 
         case KEY1LONG:
-            temp = EVENT_KEY7S;
+            temp = EVENT_KEYUPL;
             break;
 
         case KEY2SHORT:
-            temp = EVENT_KEY7S;
-            break;
-
-        case KEY2LONG:
-            temp = EVENT_KEY7S;
-            break;
-
-        case KEY3SHORT:
             temp = EVENT_KEYDOWNS;
             break;
 
-        case KEY3LONG:
+        case KEY2LONG:
             temp = EVENT_KEYDOWNL;
             break;
 
+        case KEY3SHORT:
+            temp = EVENT_KEYLEFTS;
+            break;
+
+        case KEY3LONG:
+            temp = EVENT_KEYLEFTL;
+            break;
+
         case KEY4SHORT:
-            temp = EVENT_KEYPLUSS;
+            temp = EVENT_KEYSETUPS;
             break;
 
         case KEY4LONG:
-            temp = EVENT_KEYPLUSL;
+            temp = EVENT_KEYSETUPL;
             break;
 
         case KEY5SHORT:
@@ -124,67 +107,73 @@ void Key_PutEvent(u16 KeyValue)
             break; 
 
         case KEY6SHORT:
-            temp = EVENT_KEY7S;
-            break;
-
-        case KEY6LONG:
-            temp = EVENT_KEY7S;
-            break;
-
-        case KEY7SHORT:
-            temp = EVENT_KEYUPS;
-            break;
-
-        case KEY7LONG:
-            temp = EVENT_KEYUPL;
-            break;
-
-        case KEY8SHORT:
-            temp = EVENT_KEY8S;
-            break;
-
-        case KEY8LONG:
-            temp = EVENT_KEY8L;
-            break;
-
-        case KEY9SHORT:
-            temp = EVENT_KEY9S;
-            break;
-
-        case KEY9LONG:
-            temp = EVENT_KEY9L;
-            break;
-
-        case KEY10SHORT:
-            temp = EVENT_KEY7S;
-            break;
-
-        case KEY10LONG:
-            temp = EVENT_KEY7S;
-            break;
-
-        case KEY11SHORT:
             temp = EVENT_KEYRIGHTS;
             break;
 
-        case KEY11LONG:
+        case KEY6LONG:
             temp = EVENT_KEYRIGHTL;
             break;
 
+        case KEY7SHORT:
+            temp = EVENT_NONE;
+            break;
+
+        case KEY7LONG:
+            temp = EVENT_NONE;
+            break;
+
+        case KEY8SHORT:
+            temp = EVENT_KEYENTERS;
+            break;
+
+        case KEY8LONG:
+            temp = EVENT_KEYENTERL;
+            break;
+
+        case KEY9SHORT:
+            temp = EVENT_KEYPLUSS;
+            break;
+
+        case KEY9LONG:
+            temp = EVENT_KEYPLUSL;
+            break;
+
+        case KEY10SHORT:
+            temp = EVENT_NONE;
+            break;
+
+        case KEY10LONG:
+            temp = EVENT_NONE;
+            break;
+
+        case KEY11SHORT:
+            temp = EVENT_NONE;
+            break;
+
+        case KEY11LONG:
+            temp = EVENT_NONE;
+            break;
+
         case KEY12SHORT:
-            temp = EVENT_KEYLEFTS;
+            temp = EVENT_NONE;
             break;
 
         case KEY12LONG:
-            temp = EVENT_KEYLEFTL;
+            temp = EVENT_NONE;
             break;
 
-            
         default:
             return;
     }
 
-    Key_PutEventToTail(temp);
+    /*Key_PutEventToTail*/
+    if(st_Event_EventMage.FiFoHead == (st_Event_EventMage.FiFoTail+1)%EVENT_FIFOLEN)
+    {
+        return;
+    }
+    st_Event_EventMage.EventFiFo[st_Event_EventMage.FiFoTail] = temp;
+    st_Event_EventMage.FiFoTail = (++st_Event_EventMage.FiFoTail)%EVENT_FIFOLEN;
+
 }
 
 
@@ -197,54 +186,72 @@ void Key_PutEvent(u16 KeyValue)
 u16 Key_Scan(void)
 {
     u16 State = 0;
+    u8 i;
+    
+    BspGpio_KEY1C(BspGpio_OUTPUT);
+    BspGpio_KEY2C(BspGpio_OUTPUT);
+    BspGpio_KEY3C(BspGpio_OUTPUT);
+    BspGpio_KEY4C(BspGpio_OUTPUT);
+    BspGpio_KEY5C(BspGpio_INPUT);
+    BspGpio_KEY6C(BspGpio_INPUT);
+    BspGpio_KEY7C(BspGpio_INPUT);
 
-    BspGpio_KEY1C(BspGpio_INPUT);
-    BspGpio_KEY2C(BspGpio_INPUT);
-    BspGpio_KEY3C(BspGpio_INPUT);
-    BspGpio_KEY4C(BspGpio_INPUT);
-    BspGpio_KEY5C(BspGpio_OUTPUT);
-    BspGpio_KEY6C(BspGpio_OUTPUT);
-    BspGpio_KEY7C(BspGpio_OUTPUT);
-
-    BspGpio_KEY5OUT(BspGpio_LOW);
-    BspGpio_KEY6OUT(BspGpio_HIGH);
-    BspGpio_KEY7OUT(BspGpio_HIGH);
-
-    if(BspGpio_KEY1IN())
+    BspGpio_KEY1OUT(BspGpio_HIGH);
+    BspGpio_KEY2OUT(BspGpio_LOW);
+    BspGpio_KEY3OUT(BspGpio_LOW);
+    BspGpio_KEY4OUT(BspGpio_LOW);
+    for(i=0;i<20;i++)
+    {}
+    if(BspGpio_KEY5IN())
         SETBIT(State,0);
-    if(BspGpio_KEY2IN())
+    if(BspGpio_KEY6IN())
         SETBIT(State,1);
-    if(BspGpio_KEY3IN())
+    if(BspGpio_KEY7IN())
         SETBIT(State,2);
-    if(BspGpio_KEY4IN())
+
+    BspGpio_KEY2OUT(BspGpio_HIGH);
+    BspGpio_KEY1OUT(BspGpio_LOW);
+    BspGpio_KEY3OUT(BspGpio_LOW);
+    BspGpio_KEY4OUT(BspGpio_LOW);
+    for(i=0;i<20;i++)
+    {}
+    if(BspGpio_KEY5IN())
         SETBIT(State,3);
- 
-
-    BspGpio_KEY5OUT(BspGpio_HIGH);
-    BspGpio_KEY6OUT(BspGpio_LOW);
-    BspGpio_KEY7OUT(BspGpio_HIGH);
-
-    if(BspGpio_KEY1IN())
+    if(BspGpio_KEY6IN())
         SETBIT(State,4);
-    if(BspGpio_KEY2IN())
+    if(BspGpio_KEY7IN())
         SETBIT(State,5);
-    if(BspGpio_KEY3IN())
+
+    BspGpio_KEY3OUT(BspGpio_HIGH);
+    BspGpio_KEY1OUT(BspGpio_LOW);
+    BspGpio_KEY2OUT(BspGpio_LOW);
+    BspGpio_KEY4OUT(BspGpio_LOW);
+    for(i=0;i<20;i++)
+    {}
+    if(BspGpio_KEY5IN())
         SETBIT(State,6);
-    if(BspGpio_KEY4IN())
+    if(BspGpio_KEY6IN())
         SETBIT(State,7);
-
-    BspGpio_KEY5OUT(BspGpio_HIGH);
-    BspGpio_KEY6OUT(BspGpio_HIGH);
-    BspGpio_KEY7OUT(BspGpio_LOW);
-
-    if(BspGpio_KEY1IN())
+    if(BspGpio_KEY7IN())
         SETBIT(State,8);
-    if(BspGpio_KEY2IN())
+
+    BspGpio_KEY4OUT(BspGpio_HIGH);
+    BspGpio_KEY1OUT(BspGpio_LOW);
+    BspGpio_KEY2OUT(BspGpio_LOW);
+    BspGpio_KEY3OUT(BspGpio_LOW);
+    for(i=0;i<20;i++)
+    {}
+    if(BspGpio_KEY5IN())
         SETBIT(State,9);
-    if(BspGpio_KEY3IN())
+    if(BspGpio_KEY6IN())
         SETBIT(State,10);
-    if(BspGpio_KEY4IN())
+    if(BspGpio_KEY7IN())
         SETBIT(State,11);
+
+    BspGpio_KEY1OUT(BspGpio_LOW);
+    BspGpio_KEY2OUT(BspGpio_LOW);
+    BspGpio_KEY3OUT(BspGpio_LOW);
+    BspGpio_KEY4OUT(BspGpio_LOW);
 
     return State;
 }
@@ -256,7 +263,7 @@ Description:
 Input:
 Output:
 *****************************************************************************/
-void Key_Debounce(u16 KeyState)
+u16 Key_Debounce(u16 KeyState)
 {
     u16 TrigKey = 0x0000;
     static u16 KeyStateBuf = 0x0000;
@@ -269,10 +276,12 @@ void Key_Debounce(u16 KeyState)
     {
         KeyStateBuf = KeyState;
         ShortDebounce = 0;
+        return 0;
     }
     else if(ShortDebounce < SHORTDEBOUNCE)
     {
         ShortDebounce++;
+        return 0;
     }
     else
     {
@@ -282,6 +291,9 @@ void Key_Debounce(u16 KeyState)
         ContKey = KeyState;
 
         /*Just execute One time*/
+        return TrigKey;
+
+        #if 0 
         Key_PutEvent(TrigKey);
         
         if(ContKey != ContKeyBuf)
@@ -302,5 +314,6 @@ void Key_Debounce(u16 KeyState)
             SETBIT(ContKey,7);
             Key_PutEvent(ContKey);
         }
+        #endif
     }
 }

@@ -2,7 +2,7 @@
 Copyright (C), 2014, Mingv150, All rights reserved
 FileName: /Driver/Lcd/LcdMenu.c
 Description:  
-Author:  
+Author:  mingv150@163.com
 Version:  
 Changelog: 
 *****************************************************************************/
@@ -22,8 +22,10 @@ Local header file:
 *****************************************************************************/
 #include "stdarg.h"
 #include "Lcd.h"
-#include "LcdMenu.h"
+#include "../BSP/BspEeprom.h"
 #include "../Key/Key.h"
+#include "LcdMenu.h"
+
 
 /****************************************************************************
 Global Data Structure:
@@ -103,6 +105,11 @@ static void LcdMenu_VPrintf(const char *String,...)
   char i = 0;
 
   va_start(pv_Start,String);
+
+  for(i=0; i<sizeof(LcdMenu_StrTemp); i++)
+  {
+  	LcdMenu_StrTemp[i] = 0;
+  }
 
   while(*String)
   {
@@ -214,12 +221,36 @@ static void LcdMenu_NumMasK(u8 *Str, u8 MaskBit)
           if(count == MaskBit)
           {
             Str[i] = ' ';
+            break;
           }
         }
         i++;
       }
     }
     i++;
+  } 
+}
+
+
+/****************************************************************************
+Function: Name
+Description:
+Input:
+Output:
+*****************************************************************************/
+static void LcdMenu_CharMasK(u8 *StrMask, u8 *Str)
+{
+  u8 i = 0;
+  u8 j = 0;
+
+  while(Str[i] != '\0' &&  StrMask[j] != '\0')
+  {
+  	if(Str[i] == StrMask[j] )
+  	{
+  		Str[i] =  ' ';
+                j++;
+  	}
+    	i++;
   } 
 }
 
@@ -250,19 +281,59 @@ Notes:
 void LcdMenu_Normal(u8 KeyEvent,u16 PaperNum)
 {
 	u8 num1,num2,num3,num4;
+        static u8 Index = 0;
+        static u8 FlashStop = 1;
+        
+	num4 = (PaperNum)%10;
+	num3 = (PaperNum/10)%10;
+	num2 = (PaperNum/100)%10;
+	num1 = (PaperNum/1000)%10;
 
-	num4 = (PaperNum/10)%10;
-	num3 = (PaperNum/100)%10;
-	num2 = (PaperNum/1000)%10;
-	num1 = (PaperNum/10000)%10;
+	if(KeyEvent == EVENT_KEYSETUPS)
+	{
+
+		FlashStop = 1;
+		Index = 0;
+	}
+
+        if(KeyEvent == EVENT_KEYUPS)
+	{
+		if(Index >= 1)
+			Index = 0;
+		else
+			Index++;
+	}
+
+	if(KeyEvent == EVENT_KEYDOWNS)
+	{
+		if(Index == 0)
+			Index = 1;
+		else
+			Index--;
+	}
+
+	if(KeyEvent == EVENT_KEYENTERS)
+	{
+		if (Index == 0)
+			Index++;
+		if(Index == 1)
+			FlashStop = 0;
+
+	}
 
 	LcdMenu_VPrintf("张数清零:%dS",5);
 	Lcd_StrDisp(0,0,LcdMenu_StrTemp);
 	LcdMenu_VPrintf("张数:%d%d%d%d",num1,num2,num3,num4);
 	Lcd_StrDisp(1,0,LcdMenu_StrTemp);
-	LcdMenu_VPrintf("确认键;确认");
+        
+	LcdMenu_VPrintf("确认键: 确认");
+        if(u8_Timer_Flash && Index==0 && FlashStop)
+	 LcdMenu_CharMasK(" 确认",LcdMenu_StrTemp);
 	Lcd_StrDisp(2,0,LcdMenu_StrTemp);
-	LcdMenu_VPrintf("停止键;停止");
+        
+	LcdMenu_VPrintf("停止键: 停止");
+        if(u8_Timer_Flash && Index==1 && FlashStop)
+	 LcdMenu_CharMasK(" 停止",LcdMenu_StrTemp);
 	Lcd_StrDisp(3,0,LcdMenu_StrTemp);
 }
 
@@ -279,7 +350,8 @@ void LcdMenu_Setup(u8 KeyEvent,t_SetupParam *pParam)
 	u8 Change = 0;
 	static u8 Section = 0;
 	static u8 Index = 0;
-	u8 num[3][4] = {{0,0,0,0},{0,0,0,0},{0,0,0,0}};
+	static u8 FlashStop = 1;
+	u8 num[3][4] ;
 
 	num[0][3]  = (pParam->PaperNum)%10;
 	num[0][2]  = (pParam->PaperNum/10)%10;
@@ -295,6 +367,14 @@ void LcdMenu_Setup(u8 KeyEvent,t_SetupParam *pParam)
 	num[2][2]  = (pParam->Back/10)%10;
 	num[2][1]  = (pParam->Startup)%10;
 	num[2][0]  = (pParam->Startup/10)%10;
+
+	if(KeyEvent == EVENT_KEYSETUPS)
+	{
+
+		FlashStop = 1;
+		Index = 0;
+		Section = 0;
+	}
 
 	if(KeyEvent == EVENT_KEYDOWNS)
 	{
@@ -346,6 +426,16 @@ void LcdMenu_Setup(u8 KeyEvent,t_SetupParam *pParam)
 		Change = 1;
 	}
 
+	if(KeyEvent == EVENT_KEYENTERS)
+	{
+		if(Index >= 2)
+			FlashStop = 0;
+		else
+			Index++;
+
+		BspEeprom_SaveParam(SETUPPARAM_OFFSET,(const u8 *)pParam,sizeof(t_SetupParam));
+	}
+
 	pParam->PaperNum = num[0][0]*1000+num[0][1]*100+num[0][2]*10+num[0][3];
 	pParam->ShuaJiao = num[1][0]*10+num[1][1];
 	pParam->ShuaLiao = num[1][2]*10+num[1][3];
@@ -355,15 +445,15 @@ void LcdMenu_Setup(u8 KeyEvent,t_SetupParam *pParam)
 	LcdMenu_VPrintf("设置参数");
 	Lcd_StrDisp(0,0,LcdMenu_StrTemp);
 	LcdMenu_VPrintf("张数设定:%d%d%d%d",num[0][0],num[0][1],num[0][2],num[0][3]);
-	if(Index == 0 && u8_Timer_Flash)
+	if(Index == 0 && u8_Timer_Flash && FlashStop)
 		LcdMenu_NumMasK(LcdMenu_StrTemp, Section+1);
 	Lcd_StrDisp(1,0,LcdMenu_StrTemp);
 	LcdMenu_VPrintf("刷胶:%d%dD刷料:%d%dA",num[1][0],num[1][1],num[1][2],num[1][3]);
-	if(Index == 1 && u8_Timer_Flash)
+	if(Index == 1 && u8_Timer_Flash && FlashStop)
 		LcdMenu_NumMasK(LcdMenu_StrTemp, Section+1);
 	Lcd_StrDisp(2,0,LcdMenu_StrTemp);
 	LcdMenu_VPrintf("启动:%d%dC返回:%d%dC",num[2][0],num[2][1],num[2][2],num[2][3]);
-	if(Index == 2 && u8_Timer_Flash)
+	if(Index == 2 && u8_Timer_Flash && FlashStop)
 		LcdMenu_NumMasK(LcdMenu_StrTemp, Section+1);
 	Lcd_StrDisp(3,0,LcdMenu_StrTemp);
 
@@ -380,8 +470,19 @@ Notes:
 void LcdMenu_Factory(u8 KeyEvent,t_FactoryParam *pParam)
 {
 	u8 Change = 0;
+	u8 i,j;
 	static u8 Section = 0;
 	static u8 Index = 0;
+	static u8 FlashStop = 1;
+
+
+	if(KeyEvent == EVENT_KEYSETUPS)
+	{
+
+		FlashStop = 1;
+		Index = 0;
+		Section = 0;
+	}
 
 	if(KeyEvent == EVENT_KEYDOWNS)
 	{
@@ -401,18 +502,52 @@ void LcdMenu_Factory(u8 KeyEvent,t_FactoryParam *pParam)
 
 	if(KeyEvent == EVENT_KEYRIGHTS)
 	{
-		if(Section >= 9)
-			Section = 0;
+		if(Index == 0)
+		{
+			if(Section >= 7)
+				Section = 0;
+			else
+				Section++;
+		}
 		else
-			Section++;
+		{
+			if(Section >= 9)
+				Section = 0;
+			else
+				Section++;
+		}
+
 	}
 
 	if(KeyEvent == EVENT_KEYLEFTS)
 	{
-		if(Section == 0)
-			Section = 9;
+		if(Index == 0)
+		{
+			if(Section == 0)
+				Section = 7;
+			else
+				Section--;
+		}
 		else
-			Section--;
+		{
+			if(Section == 0)
+				Section = 9;
+			else
+				Section--;
+		}
+
+	}
+
+	for(i=0;i<3;i++)
+	{
+		for(j=0;j<10;j++)
+		{
+			if(pParam->num[i][j] > 9)
+			{
+				pParam->num[i][j] = 0;
+			}	
+		}
+
 	}
 
 	if(KeyEvent == EVENT_KEYPLUSS)
@@ -433,18 +568,28 @@ void LcdMenu_Factory(u8 KeyEvent,t_FactoryParam *pParam)
 		Change = 1;
 	}
 
+	if(KeyEvent == EVENT_KEYENTERS)
+	{
+		if(Index >= 2)
+			FlashStop = 0;
+		else
+			Index++;
+
+		BspEeprom_SaveParam(FACTORYPARAM_OFFSET,(const u8 *)pParam,sizeof(t_FactoryParam));
+	}
+
 	LcdMenu_VPrintf("工厂模式");
 	Lcd_StrDisp(0,0,LcdMenu_StrTemp);
-	LcdMenu_VPrintf("设备号;%d%d%d%d%d%d%d%d",pParam->num[0][0],pParam->num[0][1],pParam->num[0][2],pParam->num[0][3],pParam->num[0][4],pParam->num[0][5],pParam->num[0][6],pParam->num[0][7]);
-	if(Index == 0 && u8_Timer_Flash)
+	LcdMenu_VPrintf("设备号:%d%d%d%d%d%d%d%d",pParam->num[0][0],pParam->num[0][1],pParam->num[0][2],pParam->num[0][3],pParam->num[0][4],pParam->num[0][5],pParam->num[0][6],pParam->num[0][7]);
+	if(Index == 0 && u8_Timer_Flash && FlashStop)
 		LcdMenu_NumMasK(LcdMenu_StrTemp, Section+1);
 	Lcd_StrDisp(1,0,LcdMenu_StrTemp);
 	LcdMenu_VPrintf("编号:%d%d%d%d%d%d%d%d%d%d",pParam->num[1][0],pParam->num[1][1],pParam->num[1][2],pParam->num[1][3],pParam->num[1][4],pParam->num[1][5],pParam->num[1][6],pParam->num[1][7],pParam->num[1][8],pParam->num[1][9]);
-	if(Index == 1 && u8_Timer_Flash)
+	if(Index == 1 && u8_Timer_Flash && FlashStop)
 		LcdMenu_NumMasK(LcdMenu_StrTemp, Section+1);
 	Lcd_StrDisp(2,0,LcdMenu_StrTemp);
 	LcdMenu_VPrintf("状态:%d%d%d%d%d%d%d%d%d%d",pParam->num[2][0],pParam->num[2][1],pParam->num[2][2],pParam->num[2][3],pParam->num[2][4],pParam->num[2][5],pParam->num[2][6],pParam->num[2][7],pParam->num[2][8],pParam->num[2][9]);
-	if(Index == 2 && u8_Timer_Flash)
+	if(Index == 2 && u8_Timer_Flash && FlashStop)
 		LcdMenu_NumMasK(LcdMenu_StrTemp, Section+1);
 	Lcd_StrDisp(3,0,LcdMenu_StrTemp);
 }

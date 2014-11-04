@@ -2,7 +2,7 @@
 Copyright (C), 2014, Mingv150, All rights reserved
 FileName: /Driver/Lcd/LcdMenu.h
 Description:  
-Author:  
+Author:  mingv150@163.com
 Version:  
 Changelog: 
 *****************************************************************************/
@@ -13,6 +13,8 @@ Changelog:
 /*For common use*/
 /*Macro Definition*/
 #define LcdMenu_PURPOSE 1
+#define SETUPPARAM_OFFSET 0
+#define FACTORYPARAM_OFFSET 20
 /*Data Type Specification*/
 typedef struct
 {
@@ -26,8 +28,7 @@ typedef struct
 typedef struct
 {
 	u8 num[3][10];
-}
-t_FactoryParam;
+}t_FactoryParam;
 
 #ifdef _LcdMenu_C_
 /*For local users*/
