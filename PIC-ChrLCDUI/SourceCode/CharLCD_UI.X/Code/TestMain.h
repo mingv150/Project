@@ -19,6 +19,7 @@ typedef enum
 	TestMain_NORMALMOD = 0,
 	TestMain_SETUPMOD,
 	TestMain_FACTORYMOD,
+	//添加模式请在这边添加
 	TestMain_MAXMOD
 }t_Sysmod;
 

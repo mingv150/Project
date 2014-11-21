@@ -38,8 +38,8 @@ extern u8 u8_Timer_Flash;
 
 
 /****************************************************************************
-Function: Name
-Description:
+Function: void interrupt IRQ(void)
+Description: 中断处理程序
 Input:
 Output:
 Notes:
@@ -49,17 +49,19 @@ void interrupt IRQ(void)
     u8 TimeBase0;
     u16 KeyTemp;
 
+    /*定时器0中断处理*/
     if(T0IF&&T0IE)
     {
         TMR0=179;
 
+        /*进行按键扫描*/
         KeyTemp = Key_Scan();
-
+        /*进行按键抗抖动处理*/
         KeyTemp = Key_Debounce(KeyTemp);
-
+        /*得到的按键放入按键Buffer*/
         Key_PutEvent(KeyTemp);
         
-        /*200*/
+        /*200ms进行一次光标闪烁*/
         if(++TimeBase0 == 100)
         {
         	TimeBase0 = 0;
@@ -72,8 +74,8 @@ void interrupt IRQ(void)
 
 
 /****************************************************************************
-Function: Name
-Description:
+Function: BspSystem_TmrInit
+Description: 初始化定时器
 Input:
 Output:
 Notes:
@@ -98,7 +100,7 @@ void BspSystem_TmrInit(void)
     PS0=1;PS1=0;PS2=1;  
     /*timeout time:997HZ*/
     TMR0=179;
-    /*Tiemr0 int en*/
+    /*Tiemr0 interrupt en*/
     T0IE=1;
     GIE=1;
 }

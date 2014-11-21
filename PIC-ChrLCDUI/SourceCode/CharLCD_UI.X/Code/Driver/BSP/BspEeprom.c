@@ -28,8 +28,8 @@ static u8 BspEeprom_Purpose;
 
 /****************************************************************************
 Function: FunctionName
-Description: 
-Input: 
+Description: 保存参数
+Input: 参数要保存的eeprom起始地址、参数指针、参数大小
 Output:
 Notes: 
 *****************************************************************************/
@@ -41,45 +41,45 @@ void BspEeprom_SaveParam(u8 StartAddr,const u8 *pSrc,u8 Size)
     
     for(i=0;i<Size;i++)
     {
-	do
-	{
-		do{;}
-		while(WR == 1);                      
-		EEADRL = (StartAddr+i);                
-		EEDATL = *(pSrc+i);                   
-		GIETemp = 0;
-		if(GIE)
-			GIETemp = 1;
-		GIE = 0;
-		EEPGD = 0;                           
-		WREN = 1;                         
-		EECON2 = 0x55;                   
-		EECON2 = 0xAA;             
-		WR = 1;                        
-		do{;}
-		while(WR == 1);                     
-		WREN = 0;                        
-		EEIF = 0;
-			
-		do{;}
-		while(RD == 1);                      
-		EEADRL = (StartAddr+i);               
-		EEPGD = 0;                            
-		RD = 1;                              
-		do{;}
-		while(RD == 1);                   
-		ReadTemp = EEDATL;               
-		if(GIETemp)
-			GIE = 1;
-	}while(ReadTemp != *(pSrc+i));
+		do
+		{
+			do{;}
+			while(WR == 1);                      
+			EEADRL = (StartAddr+i);                
+			EEDATL = *(pSrc+i);                   
+			GIETemp = 0;
+			if(GIE)
+				GIETemp = 1;
+			GIE = 0;
+			EEPGD = 0;                           
+			WREN = 1;                         
+			EECON2 = 0x55;                   
+			EECON2 = 0xAA;             
+			WR = 1;                        
+			do{;}
+			while(WR == 1);                     
+			WREN = 0;                        
+			EEIF = 0;
+				
+			do{;}
+			while(RD == 1);                      
+			EEADRL = (StartAddr+i);               
+			EEPGD = 0;                            
+			RD = 1;                              
+			do{;}
+			while(RD == 1);                   
+			ReadTemp = EEDATL;               
+			if(GIETemp)
+				GIE = 1;
+		}while(ReadTemp != *(pSrc+i));
     }	
 }
 
 
 /****************************************************************************
 Function: Name
-Description:
-Input:
+Description: 获取参数
+Input: 要读取的eeprom的起始地址、参数获得后要保存的位置，参数大小
 Output:
 Notes:
 *****************************************************************************/

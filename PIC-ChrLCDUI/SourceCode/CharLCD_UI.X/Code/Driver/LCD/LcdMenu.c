@@ -1,10 +1,12 @@
 /****************************************************************************
-Copyright (C), 2014, Mingv150, All rights reserved
+Copyright (C), 2014, Sharman Chen, All rights reserved
 FileName: /Driver/Lcd/LcdMenu.c
-Description:  
-Author:  mingv150@163.com
+Description:
 Version:  
-Changelog: 
+Changelog:   
+Author: Sharman Chen
+Email: mingv150@163.com
+Mobile: 13720889921
 *****************************************************************************/
 
 #define _LcdMenu_C_
@@ -35,7 +37,7 @@ static unsigned char LcdMenu_StrTemp[20] = {0};
 
 /****************************************************************************
 Function: Name
-Description:
+Description: 将数字转换成字符串
 Input:
 Output:
 *****************************************************************************/
@@ -89,7 +91,7 @@ static char *myitoa(int value, char *str, int radix)
 
 /****************************************************************************
 Function: FunctionName
-Description: 
+Description: 打印函数，打印字符串到LcdMenu_StrTemp
 Input: 
 Output: 
 *****************************************************************************/
@@ -200,7 +202,7 @@ static void LcdMenu_VPrintf(const char *String,...)
 
 /****************************************************************************
 Function: Name
-Description:
+Description: 屏蔽某个数字字符的显示
 Input:
 Output:
 *****************************************************************************/
@@ -234,7 +236,7 @@ static void LcdMenu_NumMasK(u8 *Str, u8 MaskBit)
 
 /****************************************************************************
 Function: Name
-Description:
+Description: 屏蔽某个字符的显示
 Input:
 Output:
 *****************************************************************************/
@@ -257,7 +259,7 @@ static void LcdMenu_CharMasK(u8 *StrMask, u8 *Str)
 
 /****************************************************************************
 Function: FunctionName
-Description: 
+Description: 欢迎界面
 Input: 
 Output:
 Notes: 
@@ -273,7 +275,7 @@ void LcdMenu_Welcome(void)
 
 /****************************************************************************
 Function: Name
-Description:
+Description: 普通模式下的界面
 Input:
 Output:
 Notes:
@@ -291,13 +293,14 @@ void LcdMenu_Normal(u8 KeyEvent,u16 PaperNum)
 
 	if(KeyEvent == EVENT_KEYSETUPS)
 	{
-
+		//设置键处理：按下默认（0，0）位置光标开始闪烁
 		FlashStop = 1;
 		Index = 0;
 	}
 
-        if(KeyEvent == EVENT_KEYUPS)
+    if(KeyEvent == EVENT_KEYUPS)
 	{
+		//UP键处理：向上移动光标
 		if(Index >= 1)
 			Index = 0;
 		else
@@ -306,6 +309,7 @@ void LcdMenu_Normal(u8 KeyEvent,u16 PaperNum)
 
 	if(KeyEvent == EVENT_KEYDOWNS)
 	{
+		//DOWN键处理：向下移动光标
 		if(Index == 0)
 			Index = 1;
 		else
@@ -314,6 +318,7 @@ void LcdMenu_Normal(u8 KeyEvent,u16 PaperNum)
 
 	if(KeyEvent == EVENT_KEYENTERS)
 	{
+		//确认键，停止闪烁，并保存参数到EEPROM
 		if (Index == 0)
 			Index++;
 		if(Index == 1)
@@ -353,6 +358,7 @@ void LcdMenu_Setup(u8 KeyEvent,t_SetupParam *pParam)
 	static u8 FlashStop = 1;
 	u8 num[3][4] ;
 
+	//张数变量转换为个/十/百/千位 方便显示
 	num[0][3]  = (pParam->PaperNum)%10;
 	num[0][2]  = (pParam->PaperNum/10)%10;
 	num[0][1]  = (pParam->PaperNum/100)%10;
@@ -370,7 +376,7 @@ void LcdMenu_Setup(u8 KeyEvent,t_SetupParam *pParam)
 
 	if(KeyEvent == EVENT_KEYSETUPS)
 	{
-
+		//设置键处理：按下默认（0，0）位置光标开始闪烁
 		FlashStop = 1;
 		Index = 0;
 		Section = 0;
@@ -378,6 +384,7 @@ void LcdMenu_Setup(u8 KeyEvent,t_SetupParam *pParam)
 
 	if(KeyEvent == EVENT_KEYDOWNS)
 	{
+		//DOWN键处理：向下移动光标
 		if(Index >= 2)
 			Index = 0;
 		else
@@ -386,6 +393,7 @@ void LcdMenu_Setup(u8 KeyEvent,t_SetupParam *pParam)
 
 	if(KeyEvent == EVENT_KEYUPS)
 	{
+		//UP键处理：向上移动光标
 		if(Index == 0)
 			Index = 2;
 		else
@@ -394,6 +402,7 @@ void LcdMenu_Setup(u8 KeyEvent,t_SetupParam *pParam)
 
 	if(KeyEvent == EVENT_KEYRIGHTS)
 	{
+		//Right键处理：向右移动光标
 		if(Section >= 3)
 			Section = 0;
 		else
@@ -402,6 +411,7 @@ void LcdMenu_Setup(u8 KeyEvent,t_SetupParam *pParam)
 
 	if(KeyEvent == EVENT_KEYLEFTS)
 	{
+		//Left键处理：向左移动光标
 		if(Section == 0)
 			Section = 3;
 		else
@@ -410,6 +420,7 @@ void LcdMenu_Setup(u8 KeyEvent,t_SetupParam *pParam)
 
 	if(KeyEvent == EVENT_KEYPLUSS)
 	{
+		//选中位加1
 		if(num[Index][Section] >= 9)
 			num[Index][Section] = 0;
 		else
@@ -419,6 +430,7 @@ void LcdMenu_Setup(u8 KeyEvent,t_SetupParam *pParam)
 
 	if(KeyEvent == EVENT_KEYMINUSS)
 	{
+		//选中位减1
 		if(num[Index][Section] > 0)
 			num[Index][Section]--;
 		else
@@ -428,6 +440,7 @@ void LcdMenu_Setup(u8 KeyEvent,t_SetupParam *pParam)
 
 	if(KeyEvent == EVENT_KEYENTERS)
 	{
+		//确认键，停止闪烁，并保存参数到EEPROM
 		if(Index >= 2)
 			FlashStop = 0;
 		else
@@ -442,16 +455,20 @@ void LcdMenu_Setup(u8 KeyEvent,t_SetupParam *pParam)
 	pParam->Startup  = num[2][0]*10+num[2][1];
 	pParam->Back     = num[2][2]*10+num[2][3];
 
+	//打印“设备参数”到字符数组LcdMenu_StrTemp
 	LcdMenu_VPrintf("设置参数");
 	Lcd_StrDisp(0,0,LcdMenu_StrTemp);
+
 	LcdMenu_VPrintf("张数设定:%d%d%d%d",num[0][0],num[0][1],num[0][2],num[0][3]);
 	if(Index == 0 && u8_Timer_Flash && FlashStop)
 		LcdMenu_NumMasK(LcdMenu_StrTemp, Section+1);
 	Lcd_StrDisp(1,0,LcdMenu_StrTemp);
+
 	LcdMenu_VPrintf("刷胶:%d%dD刷料:%d%dA",num[1][0],num[1][1],num[1][2],num[1][3]);
 	if(Index == 1 && u8_Timer_Flash && FlashStop)
 		LcdMenu_NumMasK(LcdMenu_StrTemp, Section+1);
 	Lcd_StrDisp(2,0,LcdMenu_StrTemp);
+
 	LcdMenu_VPrintf("启动:%d%dC返回:%d%dC",num[2][0],num[2][1],num[2][2],num[2][3]);
 	if(Index == 2 && u8_Timer_Flash && FlashStop)
 		LcdMenu_NumMasK(LcdMenu_StrTemp, Section+1);
@@ -461,24 +478,28 @@ void LcdMenu_Setup(u8 KeyEvent,t_SetupParam *pParam)
 
 
 /****************************************************************************
-Function: Name
-Description:
+Function: void LcdMenu_Factory(u8 KeyEvent,t_FactoryParam *pParam)
+Description: 工厂模式菜单处理
 Input:
 Output:
 Notes:
 *****************************************************************************/
 void LcdMenu_Factory(u8 KeyEvent,t_FactoryParam *pParam)
 {
-	u8 Change = 0;
 	u8 i,j;
+	//数据保存标志位
+	u8 Change = 0;
+	//光标左右位置索引
 	static u8 Section = 0;
+	//光标上下位置索引
 	static u8 Index = 0;
+	//闪烁停止标志位
 	static u8 FlashStop = 1;
 
 
 	if(KeyEvent == EVENT_KEYSETUPS)
 	{
-
+		//设置键处理：按下默认（0，0）位置光标开始闪烁
 		FlashStop = 1;
 		Index = 0;
 		Section = 0;
@@ -486,6 +507,7 @@ void LcdMenu_Factory(u8 KeyEvent,t_FactoryParam *pParam)
 
 	if(KeyEvent == EVENT_KEYDOWNS)
 	{
+		//DOWN键处理：向下移动光标
 		if(Index >= 2)
 			Index = 0;
 		else
@@ -494,6 +516,7 @@ void LcdMenu_Factory(u8 KeyEvent,t_FactoryParam *pParam)
 
 	if(KeyEvent == EVENT_KEYUPS)
 	{
+		//UP键处理：向上移动光标
 		if(Index == 0)
 			Index = 2;
 		else
@@ -502,6 +525,7 @@ void LcdMenu_Factory(u8 KeyEvent,t_FactoryParam *pParam)
 
 	if(KeyEvent == EVENT_KEYRIGHTS)
 	{
+		//Right键处理：向右移动光标
 		if(Index == 0)
 		{
 			if(Section >= 7)
@@ -521,6 +545,7 @@ void LcdMenu_Factory(u8 KeyEvent,t_FactoryParam *pParam)
 
 	if(KeyEvent == EVENT_KEYLEFTS)
 	{
+		//Left键处理：向左移动光标
 		if(Index == 0)
 		{
 			if(Section == 0)
@@ -552,6 +577,7 @@ void LcdMenu_Factory(u8 KeyEvent,t_FactoryParam *pParam)
 
 	if(KeyEvent == EVENT_KEYPLUSS)
 	{
+		//选中位加1
 		if(pParam->num[Index][Section] >= 9)
 			pParam->num[Index][Section] = 0;
 		else
@@ -561,6 +587,7 @@ void LcdMenu_Factory(u8 KeyEvent,t_FactoryParam *pParam)
 
 	if(KeyEvent == EVENT_KEYMINUSS)
 	{
+		//选中位减一
 		if(pParam->num[Index][Section] > 0)
 			pParam->num[Index][Section]--;
 		else
@@ -570,6 +597,7 @@ void LcdMenu_Factory(u8 KeyEvent,t_FactoryParam *pParam)
 
 	if(KeyEvent == EVENT_KEYENTERS)
 	{
+		//按确定键保存数据到EEPROM并停止闪烁
 		if(Index >= 2)
 			FlashStop = 0;
 		else
@@ -578,16 +606,28 @@ void LcdMenu_Factory(u8 KeyEvent,t_FactoryParam *pParam)
 		BspEeprom_SaveParam(FACTORYPARAM_OFFSET,(const u8 *)pParam,sizeof(t_FactoryParam));
 	}
 
+	//打印字符串"工厂模式"到LcdMenu_StrTemp数组中
 	LcdMenu_VPrintf("工厂模式");
+	//LcdMenu_StrTemp字符串数组送LCD显示
 	Lcd_StrDisp(0,0,LcdMenu_StrTemp);
+	
+	//打印字符串""设备号:%d%d%d%d%d%d%d%d""到LcdMenu_StrTemp数组中
 	LcdMenu_VPrintf("设备号:%d%d%d%d%d%d%d%d",pParam->num[0][0],pParam->num[0][1],pParam->num[0][2],pParam->num[0][3],pParam->num[0][4],pParam->num[0][5],pParam->num[0][6],pParam->num[0][7]);
+	//进行数字位闪烁处理
 	if(Index == 0 && u8_Timer_Flash && FlashStop)
+		//处理闪烁
 		LcdMenu_NumMasK(LcdMenu_StrTemp, Section+1);
+	//LcdMenu_StrTemp字符串数组送LCD显示
 	Lcd_StrDisp(1,0,LcdMenu_StrTemp);
+	
+	//打印字符串"编号:%d%d%d%d%d%d%d%d%d%d"到LcdMenu_StrTemp数组中
 	LcdMenu_VPrintf("编号:%d%d%d%d%d%d%d%d%d%d",pParam->num[1][0],pParam->num[1][1],pParam->num[1][2],pParam->num[1][3],pParam->num[1][4],pParam->num[1][5],pParam->num[1][6],pParam->num[1][7],pParam->num[1][8],pParam->num[1][9]);
+	//进行数字位闪烁处理
 	if(Index == 1 && u8_Timer_Flash && FlashStop)
 		LcdMenu_NumMasK(LcdMenu_StrTemp, Section+1);
+	//LcdMenu_StrTemp字符串数组送LCD显示
 	Lcd_StrDisp(2,0,LcdMenu_StrTemp);
+	
 	LcdMenu_VPrintf("状态:%d%d%d%d%d%d%d%d%d%d",pParam->num[2][0],pParam->num[2][1],pParam->num[2][2],pParam->num[2][3],pParam->num[2][4],pParam->num[2][5],pParam->num[2][6],pParam->num[2][7],pParam->num[2][8],pParam->num[2][9]);
 	if(Index == 2 && u8_Timer_Flash && FlashStop)
 		LcdMenu_NumMasK(LcdMenu_StrTemp, Section+1);

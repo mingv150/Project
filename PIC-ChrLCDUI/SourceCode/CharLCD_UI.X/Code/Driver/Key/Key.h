@@ -31,14 +31,20 @@ enum event
     EVENT_KEYSETUPL,
     EVENT_KEYENTERS,
     EVENT_KEYENTERL,
+    /*添加按键事件请在这边添加*/
     EVENT_MAX
 };
 
 #ifdef _Key_C_
 /*Macro Definition*/
+
+/*修改抗抖动时间请在这边修改*/
+/*短按键抗抖动时间*/
 #define SHORTDEBOUNCE 5
+/*长按键抗抖动时间*/
 #define LONGDEBOUNCE  10000
 
+/*添加或修改按键定义请在下面进行*/
 #define KEY3SHORT 0x0001
 #define KEY3LONG (KEY3SHORT+0x8000)
 
@@ -78,6 +84,7 @@ enum event
 #define EVENT_FIFOLEN 8
 
 /*Data Type Specification*/
+/*按键缓冲区*/
 typedef struct EventMage
 {
     u8 EventFiFo[EVENT_FIFOLEN];    

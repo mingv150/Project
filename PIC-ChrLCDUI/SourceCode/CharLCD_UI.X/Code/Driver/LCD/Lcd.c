@@ -29,7 +29,7 @@ Global Data Structure:
 
 /****************************************************************************
 Function: Name
-Description:
+Description:通用LCD操作延时函数
 Input:
 Output:
 Notes:
@@ -46,7 +46,7 @@ void Lcd_Delay(u16 t)
 
 /****************************************************************************
 Function: Name
-Description:
+Description:通过串行总线发送一个字节到LCD
 Input:
 Output:
 Notes:
@@ -58,22 +58,22 @@ static void SendByte(u8 Dbyte)
      for(i=0;i<8;i++)
      {
      	BspGpio_SCLKC(BspGpio_OUTPUT);
-		BspGpio_SCLKOUT(BspGpio_LOW);
+		  BspGpio_SCLKOUT(BspGpio_LOW);
 
-        BspGpio_SDATC(BspGpio_OUTPUT);
-        temp = (Dbyte&0x80) ? 1 : 0 ;
-	  BspGpio_SDATOUT(temp);
-        BspGpio_SCLKOUT(BspGpio_HIGH);
+      BspGpio_SDATC(BspGpio_OUTPUT);
+      temp = (Dbyte&0x80) ? 1 : 0 ;
+      BspGpio_SDATOUT(temp);
+      BspGpio_SCLKOUT(BspGpio_HIGH);
 
-        BspGpio_SCLKOUT(BspGpio_LOW);
-        Dbyte=Dbyte<<1;       
+      BspGpio_SCLKOUT(BspGpio_LOW);
+      Dbyte=Dbyte<<1;       
      }
 }
 
 
 /****************************************************************************
 Function: Name
-Description:
+Description:通过串行总线从LCD读取一个字节
 Input:
 Output:
 Notes:
@@ -115,7 +115,7 @@ static u8 ReceiveByte(void)
 
 /****************************************************************************
 Function: Name
-Description:
+Description:查询LCD是否处于忙状态
 Input:
 Output:
 Notes:
@@ -129,7 +129,7 @@ static void Lcd_CheckBusy(void)
 
 /****************************************************************************
 Function: Name
-Description:
+Description:从LCD中读取一个字节数据
 Input:
 Output:
 Notes:
@@ -146,7 +146,7 @@ static u8 Lcd_ReadData(void)
 
 /****************************************************************************
 Function: Name
-Description:
+Description:往LCD中写一个字节命令
 Input:
 Output:
 Notes:
@@ -165,7 +165,7 @@ static void Lcd_WriteCmd(u8 Cbyte )
 
 /****************************************************************************
 Function: Name
-Description:
+Description: 往LCD中写一个字节数据
 Input:
 Output:
 Notes:
@@ -184,7 +184,7 @@ static void Lcd_WriteData(u8 Dbyte )
 
 /****************************************************************************
 Function: Name
-Description:
+Description: LCD初始化程序
 Input:
 Output:
 Notes:
@@ -206,7 +206,7 @@ void Lcd_Init(void)
 
 /****************************************************************************
 Function: Name
-Description:
+Description:在LCD写入一个字符
 Input:
 Output:
 Notes:
@@ -231,7 +231,7 @@ void Lcd_StrDisp(u8 x,u8 y,const u8 *s)
 
 /****************************************************************************
 Function: Name
-Description:
+Description: LCD清屏
 Input:
 Output:
 Notes:

@@ -26,6 +26,7 @@ Local header file:
 /****************************************************************************
 Global Data Structure:
 *****************************************************************************/
+/*定义按键缓冲区*/
 static t_EventMage st_Event_EventMage = 
 {
     {0,0,0,0,0,0},
@@ -36,9 +37,9 @@ static t_EventMage st_Event_EventMage =
 
 /*******************************************************************************
 *Function:
-*Description:
+*Description:从缓冲区获取按键事件
 *Input:
-*Output:
+*Output:EVENT_NONE为没有按键，其它为其它按键事件
 *******************************************************************************/
 u8 Key_GetEvent(void)
 {
@@ -56,7 +57,7 @@ u8 Key_GetEvent(void)
 
 /****************************************************************************
 Function: Name
-Description:
+Description:将按键值转换为按键事件并放入按键缓冲区
 Input:
 Output:
 *****************************************************************************/
@@ -167,6 +168,7 @@ void Key_PutEvent(u16 KeyValue)
     }
 
     /*Key_PutEventToTail*/
+    /*将按键放入按键缓冲区*/
     if(st_Event_EventMage.FiFoHead == (st_Event_EventMage.FiFoTail+1)%EVENT_FIFOLEN)
     {
         return;
@@ -179,7 +181,7 @@ void Key_PutEvent(u16 KeyValue)
 
 /*******************************************************************************
 *Function:
-*Description:
+*Description:进行按键扫描
 *Input: KeyState = 8 Key 0->down 1->up
 *Output:
 *******************************************************************************/
@@ -259,7 +261,7 @@ u16 Key_Scan(void)
 
 /****************************************************************************
 Function: Name
-Description:
+Description:进行按键抗抖动处理
 Input:
 Output:
 *****************************************************************************/

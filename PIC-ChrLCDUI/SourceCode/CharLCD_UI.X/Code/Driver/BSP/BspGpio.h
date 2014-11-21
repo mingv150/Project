@@ -18,6 +18,7 @@ Changelog:
 #define BspGpio_LOW 0
 #define BspGpio_HIGH 1
 
+/*修改或添加端口定义请在下边*/
 #define BspGpio_PORTAC(x) (TRISA = (x))
 #define BspGpio_PORTAD(x) (PORTA = (x))
 #define BspGpio_PORTBC(x) (TRISB = (x))
